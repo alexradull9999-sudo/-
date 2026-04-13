@@ -469,7 +469,7 @@ function PainSolutionSection() {
           {/* Before */}
           <div className="relative rounded-2xl overflow-hidden group">
             <img 
-              src="/images/bezram_do.png" 
+              src="/images/bezram%20do.png" 
               alt="Открытая веранда до остекления" 
               className="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-105"
               loading="lazy"
