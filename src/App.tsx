@@ -189,7 +189,7 @@ function HeroSection({ onScrollToQuiz, onScrollToPortfolio, onOpenModal }: { onS
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/images/hero.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_9a7d3051-c920-4011-8e4c-eaceb5f55a45_1.png" 
+          src="/images/hero.png" 
           alt="Застекленная веранда" 
           className="w-full h-full object-cover"
           fetchPriority="high"
