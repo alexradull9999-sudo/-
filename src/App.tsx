@@ -110,6 +110,12 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    // Yandex Metrika Goal
+    if (typeof (window as any).ym !== 'undefined') {
+      (window as any).ym(108711441, 'reachGoal', 'send');
+    }
+
     setTimeout(() => {
       setIsSubmitting(false);
       setIsSuccess(true);
@@ -650,6 +656,12 @@ function QuizSection() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    // Yandex Metrika Goal
+    if (typeof (window as any).ym !== 'undefined') {
+      (window as any).ym(108711441, 'reachGoal', 'send_kviz');
+    }
+
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
