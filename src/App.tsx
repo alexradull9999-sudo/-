@@ -6,7 +6,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { CheckCircle2, Phone, MessageCircle, Shield, Clock, ThermometerSnowflake, Ruler, Factory, MapPin, Star, ArrowRight, Menu, X } from "lucide-react";
+import { CheckCircle2, Phone, MessageCircle, Shield, Clock, ThermometerSnowflake, Ruler, Factory, MapPin, Star, ArrowRight, Menu, X, Home, Building2, Tent, Maximize, CloudRain, Sun, DoorOpen, Leaf, Waves, Utensils, Briefcase, ArrowUpCircle } from "lucide-react";
 
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -37,16 +37,16 @@ export default function App() {
               <span className="font-bold text-2xl tracking-tight text-slate-900">БЕЗРАМ</span>
             </div>
             
-            <div className="hidden md:flex items-center space-x-8">
-              <button onClick={() => scrollToSection('advantages')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Преимущества</button>
-              <button onClick={() => scrollToSection('portfolio')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Работы</button>
-              <button onClick={() => scrollToSection('prices')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Цены</button>
-              <button onClick={() => scrollToSection('faq')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">FAQ</button>
-              <div className="flex flex-col items-end">
-                <a href="tel:+79990000000" className="text-lg font-bold text-slate-900 hover:text-blue-600 transition-colors">+7 (342) 000-00-00</a>
-                <span className="text-xs text-slate-500">Пермь и край</span>
+              <div className="hidden md:flex items-center space-x-8">
+                <button onClick={() => scrollToSection('advantages')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Преимущества</button>
+                <button onClick={() => scrollToSection('portfolio')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Работы</button>
+                <button onClick={() => scrollToSection('prices')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Цены</button>
+                <button onClick={() => scrollToSection('faq')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">FAQ</button>
+                <div className="flex flex-col items-end">
+                  <a href="tel:+73420000000" className="text-lg font-bold text-slate-900 hover:text-blue-600 transition-colors">+7 (342) 000-00-00</a>
+                  <span className="text-xs text-slate-500">Пермь и край</span>
+                </div>
               </div>
-            </div>
 
             <div className="md:hidden flex items-center">
               <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-slate-600">
@@ -63,9 +63,9 @@ export default function App() {
             <button onClick={() => scrollToSection('portfolio')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">Работы</button>
             <button onClick={() => scrollToSection('prices')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">Цены</button>
             <button onClick={() => scrollToSection('faq')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">FAQ</button>
-            <div className="mt-4 px-3">
-              <a href="tel:+79990000000" className="block text-lg font-bold text-slate-900">+7 (342) 000-00-00</a>
-            </div>
+              <div className="mt-4 px-3">
+                <a href="tel:+73420000000" className="block text-lg font-bold text-slate-900">+7 (342) 000-00-00</a>
+              </div>
           </div>
         )}
       </nav>
@@ -76,6 +76,7 @@ export default function App() {
           onScrollToPortfolio={() => scrollToSection('portfolio')} 
           onOpenModal={openModal}
         />
+        <WhatWeGlazeSection onOpenModal={openModal} onScrollToQuiz={() => scrollToSection('quiz')} />
         <PainSolutionSection />
         <AdvantagesSection />
         <QuizSection />
@@ -206,7 +207,7 @@ function HeroSection({ onScrollToQuiz, onScrollToPortfolio, onOpenModal }: { onS
             </div>
             
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6 tracking-tight">
-              Безрамное остекление веранды <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">в Перми</span>
+              Безрамное остекление <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">в Перми</span>
             </h1>
             
             <p className="text-xl md:text-2xl text-slate-200 mb-10 leading-relaxed font-light max-w-2xl">
@@ -228,7 +229,7 @@ function HeroSection({ onScrollToQuiz, onScrollToPortfolio, onOpenModal }: { onS
                 <span className="font-medium">Более 200 объектов в крае</span>
               </div>
               <div className="flex items-center gap-4">
-                <a href="tel:+79990000000" className="flex items-center gap-2 hover:text-white transition-colors">
+                <a href="tel:+73420000000" className="flex items-center gap-2 hover:text-white transition-colors">
                   <Phone className="w-5 h-5" />
                   <span className="font-medium">+7 (342) 000-00-00</span>
                 </a>
@@ -456,6 +457,65 @@ function VerandaAnimation() {
   );
 }
 
+function WhatWeGlazeSection({ onOpenModal, onScrollToQuiz }: { onOpenModal: (t?: string) => void, onScrollToQuiz: () => void }) {
+  const items = [
+    { icon: <Home className="w-6 h-6" />, title: "Веранды и террасы", desc: "Максимум света и пространства без лишних рам." },
+    { icon: <Tent className="w-6 h-6" />, title: "Беседки и барбекю", desc: "Уютные вечера в любую погоду круглый год." },
+    { icon: <Building2 className="w-6 h-6" />, title: "Балконы и лоджии", desc: "Превратите балкон в полноценную видовую зону." },
+    { icon: <Maximize className="w-6 h-6" />, title: "Панорамные окна", desc: "Остекление «в пол» для современных интерьеров." },
+    { icon: <CloudRain className="w-6 h-6" />, title: "Козырьки и навесы", desc: "Стеклянная защита от осадков с легким дизайном." },
+    { icon: <Sun className="w-6 h-6" />, title: "Стеклянные крыши", desc: "Небо над головой в полной безопасности." },
+    { icon: <DoorOpen className="w-6 h-6" />, title: "Входные группы", desc: "Стильные двери и порталы для вашего дома." },
+    { icon: <Leaf className="w-6 h-6" />, title: "Зимние сады", desc: "Ваш личный оазис за прочным стеклом." },
+    { icon: <Waves className="w-6 h-6" />, title: "Бассейны и СПА", desc: "Защита водной зоны без потери панорамы." },
+    { icon: <Utensils className="w-6 h-6" />, title: "Кафе и рестораны", desc: "Комфортные летние залы для ваших гостей." },
+    { icon: <Briefcase className="w-6 h-6" />, title: "Офисы и перегородки", desc: "Современное зонирование рабочих пространств." },
+    { icon: <ArrowUpCircle className="w-6 h-6" />, title: "Пентхаусы", desc: "Остекление на любой высоте с гарантией." },
+  ];
+
+  return (
+    <section className="py-24 bg-white relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">Мы остекляем любые объекты</h2>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">От небольших козырьков до лоджий в пентхаусах и торговых центров.</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {items.map((item, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: idx * 0.1 }}
+              onClick={onScrollToQuiz}
+              className="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-blue-600 hover:border-blue-500 transition-all duration-300 cursor-pointer"
+            >
+              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/20 group-hover:text-white transition-colors">
+                {item.icon}
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-white transition-colors">{item.title}</h3>
+              <p className="text-slate-600 group-hover:text-blue-100 transition-colors leading-relaxed">{item.desc}</p>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="mt-16 text-center">
+          <Button 
+            onClick={() => onOpenModal('Консультация по объекту')} 
+            size="lg" 
+            variant="outline" 
+            className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white h-14 rounded-2xl px-10 text-lg"
+          >
+            Нужна консультация по моему объекту
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function PainSolutionSection() {
   return (
     <section className="py-24 bg-white">
@@ -563,15 +623,15 @@ function AdvantagesSection() {
         <div className="mt-16 flex flex-wrap justify-center gap-4">
           <div className="bg-white px-6 py-3 rounded-full shadow-sm border border-slate-100 flex items-center gap-2 text-sm font-medium text-slate-700">
             <ThermometerSnowflake className="w-4 h-4 text-blue-500" />
-            Стекло выдерживает -40°C и ветер до 20 м/с
+            <span>Стекло выдерживает -40°C и ветер до 20 м/с</span>
           </div>
           <div className="bg-white px-6 py-3 rounded-full shadow-sm border border-slate-100 flex items-center gap-2 text-sm font-medium text-slate-700">
             <MapPin className="w-4 h-4 text-blue-500" />
-            Уже работаем в Пермском крае
+            <span>Уже работаем в Пермском крае</span>
           </div>
           <div className="bg-white px-6 py-3 rounded-full shadow-sm border border-slate-100 flex items-center gap-2 text-sm font-medium text-slate-700">
             <Clock className="w-4 h-4 text-blue-500" />
-            Успейте до сезона — пока не выросла очередь
+            <span>Успейте до сезона — пока не выросла очередь</span>
           </div>
         </div>
       </div>
@@ -607,7 +667,7 @@ function QuizSection() {
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Узнайте стоимость вашей веранды за 2 минуты</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Узнайте стоимость остекления за 2 минуты</h2>
           <p className="text-lg text-slate-600">Ответьте на 4 простых вопроса и получите точный расчёт</p>
         </div>
 
@@ -627,12 +687,22 @@ function QuizSection() {
                 
                 {step === 1 && (
                   <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                    <h3 className="text-2xl font-bold text-slate-900 mb-6">Что нужно остеклить?</h3>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-6">Тип вашего объекта?</h3>
                     <RadioGroup defaultValue="veranda" className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {['Веранда', 'Терраса', 'Беседка', 'Балкон', 'Другое'].map((item, i) => (
-                        <div key={i} className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative">
-                          <RadioGroupItem value={item.toLowerCase()} id={`type-${i}`} className="absolute right-4" />
-                          <Label htmlFor={`type-${i}`} className="flex-1 cursor-pointer font-medium text-base">{item}</Label>
+                      {[
+                        { id: 'v', label: 'Загородный дом / Дача', sub: 'Веранда, терраса, беседка' },
+                        { id: 'a', label: 'Квартира / Пентхаус', sub: 'Балкон, лоджия, панорама' },
+                        { id: 'c', label: 'Бизнес / Коммерция', sub: 'Кафе, офис, входная группа' },
+                        { id: 'o', label: 'Другое', sub: 'Индивидуальный проект' }
+                      ].map((item, i) => (
+                        <div 
+                          key={i} 
+                          onClick={handleNext}
+                          className="flex flex-col border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative group"
+                        >
+                          <RadioGroupItem value={item.id} id={`type-${i}`} className="absolute right-4 top-4 group-hover:border-blue-400" />
+                          <Label htmlFor={`type-${i}`} className="cursor-pointer font-bold text-base mb-1">{item.label}</Label>
+                          <span className="text-sm text-slate-500">{item.sub}</span>
                         </div>
                       ))}
                     </RadioGroup>
@@ -641,11 +711,15 @@ function QuizSection() {
 
                 {step === 2 && (
                   <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                    <h3 className="text-2xl font-bold text-slate-900 mb-6">Примерный периметр остекления?</h3>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-6">Примерная площадь или периметр?</h3>
                     <RadioGroup defaultValue="10-20" className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {['До 10 м', '10–20 м', '20–30 м', 'Более 30 м'].map((item, i) => (
-                        <div key={i} className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative">
-                          <RadioGroupItem value={item} id={`size-${i}`} className="absolute right-4" />
+                      {['До 10 м²', '10–20 м²', '20–40 м²', 'Более 40 м²'].map((item, i) => (
+                        <div 
+                          key={i} 
+                          onClick={handleNext}
+                          className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative group"
+                        >
+                          <RadioGroupItem value={item} id={`size-${i}`} className="absolute right-4 group-hover:border-blue-400" />
                           <Label htmlFor={`size-${i}`} className="flex-1 cursor-pointer font-medium text-base">{item}</Label>
                         </div>
                       ))}
@@ -655,12 +729,21 @@ function QuizSection() {
 
                 {step === 3 && (
                   <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                    <h3 className="text-2xl font-bold text-slate-900 mb-6">Когда планируете сделать?</h3>
-                    <RadioGroup defaultValue="season" className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {['Уже сейчас', 'До конца месяца', 'В течение сезона', 'Пока смотрю цены'].map((item, i) => (
-                        <div key={i} className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative">
-                          <RadioGroupItem value={item} id={`time-${i}`} className="absolute right-4" />
-                          <Label htmlFor={`time-${i}`} className="flex-1 cursor-pointer font-medium text-base">{item}</Label>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-6">Текущее состояние объекта?</h3>
+                    <RadioGroup defaultValue="ready" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {[
+                        'Полностью готов под остекление',
+                        'На стадии строительства',
+                        'Требуется демонтаж старых конструкций',
+                        'Нужен замер и консультация эксперта'
+                      ].map((item, i) => (
+                        <div 
+                          key={i} 
+                          onClick={handleNext}
+                          className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative group"
+                        >
+                          <RadioGroupItem value={item} id={`state-${i}`} className="absolute right-4 group-hover:border-blue-400" />
+                          <Label htmlFor={`state-${i}`} className="flex-1 cursor-pointer font-medium text-base">{item}</Label>
                         </div>
                       ))}
                     </RadioGroup>
@@ -669,11 +752,20 @@ function QuizSection() {
 
                 {step === 4 && (
                   <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                    <h3 className="text-2xl font-bold text-slate-900 mb-6">Что важнее всего?</h3>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-6">Приоритет в работе?</h3>
                     <RadioGroup defaultValue="all" className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {['Цена', 'Скорость монтажа', 'Качество', 'Всё в комплексе'].map((item, i) => (
-                        <div key={i} className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative">
-                          <RadioGroupItem value={item} id={`priority-${i}`} className="absolute right-4" />
+                      {[
+                        'Минимальная цена (эконом)',
+                        'Максимальное качество и дизайн',
+                        'Сжатые сроки монтажа',
+                        'Работа «под ключ» с гарантией'
+                      ].map((item, i) => (
+                        <div 
+                          key={i} 
+                          onClick={handleNext}
+                          className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative group"
+                        >
+                          <RadioGroupItem value={item} id={`priority-${i}`} className="absolute right-4 group-hover:border-blue-400" />
                           <Label htmlFor={`priority-${i}`} className="flex-1 cursor-pointer font-medium text-base">{item}</Label>
                         </div>
                       ))}
@@ -683,30 +775,17 @@ function QuizSection() {
 
                 {step === 5 && (
                   <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
-                    <h3 className="text-2xl font-bold text-slate-900 mb-2">Куда отправить расчёт?</h3>
-                    <p className="text-slate-600 mb-6">Оставьте контакты, и мы пришлём точную стоимость в течение 15 минут.</p>
+                    <h3 className="text-2xl font-bold text-slate-900 mb-2">Куда отправить детальный расчёт?</h3>
+                    <p className="text-slate-600 mb-6">Оставьте контакты, и наш специалист подготовит смету под ваш проект.</p>
                     
                     <div className="space-y-4 max-w-md">
                       <div className="space-y-2">
                         <Label htmlFor="name">Ваше имя</Label>
-                        <Input id="name" placeholder="Иван" required className="h-12" />
+                        <Input id="name" placeholder="Как к вам обращаться?" required className="h-12" />
                       </div>
                       <div className="space-y-2">
-                        <Label htmlFor="phone">Телефон</Label>
+                        <Label htmlFor="phone">Номер телефона</Label>
                         <Input id="phone" type="tel" placeholder="+7 (___) ___-__-__" required className="h-12" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label>Удобный мессенджер (опционально)</Label>
-                        <div className="flex gap-4">
-                          <label className="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" className="rounded text-blue-600 focus:ring-blue-500" />
-                            <span>Telegram</span>
-                          </label>
-                          <label className="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" className="rounded text-blue-600 focus:ring-blue-500" />
-                            <span>Написать Max</span>
-                          </label>
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -717,12 +796,14 @@ function QuizSection() {
                     <Button type="button" variant="ghost" onClick={handlePrev} className="text-slate-500">
                       Назад
                     </Button>
-                  ) : <div></div>}
+                  ) : <div />}
                   
-                  <Button type="submit" size="lg" disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white px-8 h-12 rounded-xl">
-                    {isSubmitting ? 'Отправка...' : step === 5 ? 'Получить расчёт' : 'Далее'}
-                    {step < 5 && <ArrowRight className="ml-2 w-4 h-4" />}
-                  </Button>
+                  {step === 5 && (
+                    <Button type="submit" size="lg" disabled={isSubmitting} className="bg-blue-600 hover:bg-blue-700 text-white px-8 h-12 rounded-xl">
+                      {isSubmitting ? 'Отправка...' : 'Получить смету'}
+                      <ArrowRight className="ml-2 w-4 h-4" />
+                    </Button>
+                  )}
                 </div>
               </form>
             ) : (
@@ -730,13 +811,16 @@ function QuizSection() {
                 <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
                   <CheckCircle2 className="w-10 h-10 text-green-600" />
                 </div>
-                <h3 className="text-3xl font-bold text-slate-900 mb-4">Расчёт готов!</h3>
-                <p className="text-xl text-slate-600 mb-8">Менеджер свяжется с вами в течение 15 минут.</p>
+                <h3 className="text-3xl font-bold text-slate-900 mb-4">Заявка принята!</h3>
+                <p className="text-xl text-slate-600 mb-8">Инженер свяжется с вами в ближайшее время для уточнения деталей.</p>
                 
                 <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 max-w-md mx-auto">
-                  <p className="text-sm text-blue-800 font-medium mb-2">Ориентировочная стоимость для вашего периметра:</p>
-                  <p className="text-3xl font-bold text-blue-900">от 180 000 ₽</p>
-                  <p className="text-xs text-blue-600 mt-2">*Точная цена будет в отправленном расчёте</p>
+                  <p className="text-sm text-blue-800 font-medium mb-2">Что произойдет дальше:</p>
+                  <ul className="text-sm text-blue-700 text-left space-y-2">
+                    <li>1. Мы изучим ваши параметры</li>
+                    <li>2. Сделаем предварительный расчет цен</li>
+                    <li>3. Предложим варианты конфигурации</li>
+                  </ul>
                 </div>
               </div>
             )}
@@ -749,17 +833,16 @@ function QuizSection() {
 
 function PortfolioSection() {
   const [filter, setFilter] = useState('all');
-  
   const projects = [
     { id: 1, type: 'veranda', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_0.png', title: 'Пермь, посёлок Заречный', desc: '18 м, монтаж 2 дня' },
     { id: 2, type: 'terrace', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_1.png', title: 'Краснокамск', desc: '24 м, монтаж 3 дня' },
     { id: 3, type: 'gazebo', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_2.png', title: 'Добрянка', desc: '12 м, монтаж 1 день' },
     { id: 4, type: 'veranda', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_3.png', title: 'Пермь, Мотовилиха', desc: '20 м, монтаж 2 дня' },
     { id: 5, type: 'terrace', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_39987f94-2761-4e87-a5e7-2aea595b8dc3_0.png', title: 'Полазна', desc: '30 м, монтаж 3 дня' },
-    { id: 6, type: 'gazebo', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_64c9fb53-ffc7-4e9b-9e2f-5dcc82b8be4f_3.png', title: 'Пермь, Гайва', desc: '15 м, монтаж 2 дня' },
+    { id: 6, type: 'gazebo', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_64c9fb53-ffc7-4e9b-9e2f-5dcc82b8be4f_3.png', title: 'Пермь, Гайва', desc: '15 м, монтаж 2 дня' }
   ];
 
-  const filtered = filter === 'all' ? projects : projects.filter(p => p.type === filter);
+  const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.type === filter);
 
   return (
     <section id="portfolio" className="py-24 bg-slate-900 text-white">
@@ -769,7 +852,6 @@ function PortfolioSection() {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Выполненные объекты в Пермском крае</h2>
             <p className="text-slate-400 text-lg">Посмотрите, как преображаются дома с нашим безрамным остеклением.</p>
           </div>
-          
           <div className="flex gap-2 overflow-x-auto pb-2 w-full md:w-auto">
             <Button variant={filter === 'all' ? 'default' : 'outline'} onClick={() => setFilter('all')} className={filter === 'all' ? 'bg-blue-600' : 'border-slate-700 text-slate-300 hover:bg-slate-800'}>Все</Button>
             <Button variant={filter === 'veranda' ? 'default' : 'outline'} onClick={() => setFilter('veranda')} className={filter === 'veranda' ? 'bg-blue-600' : 'border-slate-700 text-slate-300 hover:bg-slate-800'}>Веранды</Button>
@@ -777,17 +859,11 @@ function PortfolioSection() {
             <Button variant={filter === 'gazebo' ? 'default' : 'outline'} onClick={() => setFilter('gazebo')} className={filter === 'gazebo' ? 'bg-blue-600' : 'border-slate-700 text-slate-300 hover:bg-slate-800'}>Беседки</Button>
           </div>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map(project => (
+          {filteredProjects.map(project => (
             <div key={project.id} className="group relative rounded-2xl overflow-hidden bg-slate-800 animate-in fade-in duration-500">
               <div className="aspect-[4/3] overflow-hidden">
-                <img 
-                  src={project.img} 
-                  alt={project.title} 
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  referrerPolicy="no-referrer"
-                />
+                <img src={project.img} alt={project.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" referrerPolicy="no-referrer" />
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/20 to-transparent opacity-80"></div>
               <div className="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform">
@@ -817,17 +893,16 @@ function HowWeWorkSection() {
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Как мы работаем</h2>
           <p className="text-lg text-slate-600">Простой и понятный процесс от первого звонка до готовой веранды</p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {steps.map((step, idx) => (
             <div key={idx} className="relative">
               {idx < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-8 left-[60%] w-full h-[2px] bg-slate-100">
-                  <div className="absolute right-0 top-[-4px] w-2 h-2 rounded-full bg-slate-200"></div>
-                </div>
+                <div className="hidden lg:block absolute top-12 left-[60%] w-[80%] h-[2px] bg-slate-100 z-0"></div>
               )}
-              <div className="relative z-10 bg-white pr-8">
-                <div className="text-5xl font-extrabold text-slate-100 mb-6 tracking-tighter">{step.num}</div>
+              <div className="relative z-10">
+                <div className="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl font-bold mb-6 shadow-sm shadow-blue-100">
+                  {step.num}
+                </div>
                 <h3 className="text-xl font-bold text-slate-900 mb-3">{step.title}</h3>
                 <p className="text-slate-600 leading-relaxed">{step.desc}</p>
               </div>
@@ -841,9 +916,24 @@ function HowWeWorkSection() {
 
 function ReviewsSection() {
   const reviews = [
-    { name: "Александр", location: "Пермь", text: "Долго сомневались, выдержит ли безрамное остекление наши зимы. Зиму пережили отлично, нигде не дует. Летом просто сказка - сдвинули все стёкла и сидим на открытом воздухе.", img: "https://picsum.photos/seed/r1/100/100" },
-    { name: "Елена", location: "Добрянка", text: "Ребята молодцы! Приехали на замер в тот же день, всё четко посчитали. Монтаж занял ровно 2 дня, как и обещали. Веранда преобразилась невероятно.", img: "https://picsum.photos/seed/r2/100/100" },
-    { name: "Михаил", location: "Краснокамск", text: "Искал именно производителя, чтобы без переплат. Качество фурнитуры отличное, стёкла ходят плавно. Дали гарантию 25 лет, что очень внушает доверие.", img: "https://picsum.photos/seed/r3/100/100" }
+    {
+      name: "Александр",
+      location: "Пермь",
+      text: "Долго сомневались, выдержит ли безрамное остекление наши зимы. Зиму пережили отлично, нигде не дует. Летом просто сказка - сдвинули все стёкла и сидим на открытом воздухе.",
+      img: "https://picsum.photos/seed/r1/100/100"
+    },
+    {
+      name: "Елена",
+      location: "Добрянка",
+      text: "Ребята молодцы! Приехали на замер в тот же день, всё четко посчитали. Монтаж занял ровно 2 дня, как и обещали. Веранда преобразилась невероятно.",
+      img: "https://picsum.photos/seed/r2/100/100"
+    },
+    {
+      name: "Михаил",
+      location: "Краснокамск",
+      text: "Искал именно производителя, чтобы без переплат. Качество фурнитуры отличное, стёкла ходят плавно. Дали гарантию 25 лет, что очень внушает доверие.",
+      img: "https://picsum.photos/seed/r3/100/100"
+    }
   ];
 
   return (
@@ -858,13 +948,14 @@ function ReviewsSection() {
             Все отзывы в 2GIS
           </Button>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {reviews.map((review, idx) => (
-            <Card key={idx} className="bg-white border-none shadow-sm">
+            <Card key={idx} className="bg-white border-none shadow-sm hover:shadow-md transition-shadow">
               <CardContent className="p-8">
                 <div className="flex gap-1 mb-6">
-                  {[1,2,3,4,5].map(i => <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />)}
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                  ))}
                 </div>
                 <p className="text-slate-700 mb-8 italic leading-relaxed">"{review.text}"</p>
                 <div className="flex items-center gap-4">
@@ -891,65 +982,77 @@ function PricesSection({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Ориентировочные цены</h2>
           <p className="text-lg text-slate-600">Точная стоимость — после замера. Замер бесплатно.</p>
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+          {/* Item 1 */}
           <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
             <CardContent className="p-8 text-center">
               <h3 className="text-xl font-bold text-slate-900 mb-2">Стандартная веранда</h3>
               <p className="text-slate-500 mb-6">Периметр до 15 м</p>
               <div className="text-4xl font-extrabold text-blue-600 mb-8">от 120 000 ₽</div>
               <ul className="space-y-3 text-left text-slate-700 mb-8">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> Закаленное стекло 8-10 мм</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> Надежная фурнитура</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> Монтаж включен</li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Закаленное стекло 8-10 мм</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Надежная фурнитура</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Монтаж включен</span>
+                </li>
               </ul>
-              <Button 
-                onClick={() => onOpenModal('Расчёт стандартной веранды')}
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white"
-              >
-                Рассчитать точно
-              </Button>
+              <Button onClick={() => onOpenModal('Расчёт стандартной веранды')} className="w-full bg-slate-900 hover:bg-slate-800 text-white">Рассчитать точно</Button>
             </CardContent>
           </Card>
 
+          {/* Item 2 */}
           <Card className="border-blue-200 shadow-lg relative overflow-hidden transform md:-translate-y-4">
-            <div className="absolute top-0 left-0 w-full bg-blue-600 text-white text-xs font-bold uppercase tracking-wider py-1.5 text-center">
-              Популярный выбор
-            </div>
+            <div className="absolute top-0 left-0 w-full bg-blue-600 text-white text-xs font-bold uppercase tracking-wider py-1.5 text-center">Популярный выбор</div>
             <CardContent className="p-8 pt-10 text-center">
               <h3 className="text-xl font-bold text-slate-900 mb-2">Большая терраса</h3>
               <p className="text-slate-500 mb-6">Периметр 15–25 м</p>
               <div className="text-4xl font-extrabold text-blue-600 mb-8">от 180 000 ₽</div>
               <ul className="space-y-3 text-left text-slate-700 mb-8">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> Закаленное стекло 10 мм</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> Усиленный профиль</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> Монтаж включен</li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Повышенная ветроустойчивость</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Усиленный профиль</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Гарантия на монтаж 5 лет</span>
+                </li>
               </ul>
-              <Button 
-                onClick={() => onOpenModal('Расчёт большой террасы')}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                Рассчитать точно
-              </Button>
+              <Button onClick={() => onOpenModal('Расчёт большой террасы')} className="w-full bg-blue-600 hover:bg-blue-700 text-white">Рассчитать точно</Button>
             </CardContent>
           </Card>
 
+          {/* Item 3 */}
           <Card className="border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
             <CardContent className="p-8 text-center">
-              <h3 className="text-xl font-bold text-slate-900 mb-2">Сложные объекты</h3>
-              <p className="text-slate-500 mb-6">Периметр свыше 25 м</p>
-              <div className="text-4xl font-extrabold text-slate-900 mb-8 text-2xl">Индивидуально</div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Эксклюзив</h3>
+              <p className="text-slate-500 mb-6">Сложные формы и дизайн</p>
+              <div className="text-4xl font-extrabold text-slate-900 mb-8">Индивидуально</div>
               <ul className="space-y-3 text-left text-slate-700 mb-8">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> Нестандартные формы</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> Высокие проемы</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" /> Персональный проект</li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Тонированное стекло</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Покраска профиля в RAL</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                  <span>Нестандартные размеры</span>
+                </li>
               </ul>
-              <Button 
-                onClick={() => onOpenModal('Заявка на сложный объект')}
-                className="w-full bg-slate-900 hover:bg-slate-800 text-white"
-              >
-                Вызвать инженера
-              </Button>
+              <Button onClick={() => onOpenModal('Заявка на эксклюзив')} variant="outline" className="w-full border-slate-300">Вызвать инженера</Button>
             </CardContent>
           </Card>
         </div>
@@ -960,11 +1063,26 @@ function PricesSection({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
 
 function FaqSection() {
   const faqs = [
-    { q: "Сколько стоит безрамное остекление в Перми?", a: "Стоимость начинается от 120 000 ₽ для небольших веранд. Итоговая цена зависит от периметра, высоты проемов и выбранной фурнитуры. Точную смету мы составляем после бесплатного замера." },
-    { q: "Сколько времени занимает монтаж?", a: "Сам монтаж занимает от 1 до 3 дней в зависимости от объема работ. Бригада выезжает на объект в течение недели после проведения замера и заключения договора." },
-    { q: "Работает ли остекление зимой при -30°C?", a: "Да, система отлично функционирует в суровом пермском климате. Закаленное стекло выдерживает перепады температур до -40°C, а специальная фурнитура не промерзает и позволяет открывать/закрывать створки даже зимой." },
-    { q: "Нужно ли разрешение на остекление веранды?", a: "В большинстве случаев для остекления веранды или террасы в частном доме разрешение не требуется, так как это не является капитальной перестройкой. Однако, если дом находится в исторической зоне, могут быть нюансы." },
-    { q: "Какая гарантия на систему?", a: "Мы предоставляем гарантию 25 лет на алюминиевый профиль и стеклянные полотна, а также 5 лет на фурнитуру и монтажные работы. Это самая длинная гарантия в сегменте." }
+    {
+      q: "Сколько стоит безрамное остекление в Перми?",
+      a: "Стоимость начинается от 120 000 ₽ для небольших веранд. Итоговая цена зависит от периметра, высоты проемов и выбранной фурнитуры. Точную смету мы составляем после бесплатного замера."
+    },
+    {
+      q: "Сколько времени занимает монтаж?",
+      a: "Сам монтаж занимает от 1 до 3 дней в зависимости от объема работ. Бригада выезжает на объект в течение недели после проведения замера и заключения договора."
+    },
+    {
+      q: "Работает ли остекление зимой при -30°C?",
+      a: "Да, система отлично функционирует в суровом пермском климате. Закаленное стекло выдерживает перепады температур до -40°C, а специальная фурнитура не промерзает и позволяет открывать/закрывать створки даже зимой."
+    },
+    {
+      q: "Нужно ли разрешение на остекление веранды?",
+      a: "В большинстве случаев для остекления веранды или террасы в частном доме разрешение не требуется, так как это не является капитальной перестройкой. Однако, если дом находится в исторической зоне, могут быть нюансы."
+    },
+    {
+      q: "Какая гарантия на систему?",
+      a: "Мы предоставляем гарантию 25 лет на алюминиевый профиль и стеклянные полотна, а также 5 лет на фурнитуру и монтажные работы. Это самая длинная гарантия в сегменте."
+    }
   ];
 
   return (
@@ -973,7 +1091,6 @@ function FaqSection() {
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Частые вопросы</h2>
         </div>
-
         <Accordion type="single" collapsible className="w-full bg-white rounded-2xl shadow-sm border border-slate-200 px-6 py-2">
           {faqs.map((faq, idx) => (
             <AccordionItem key={idx} value={`item-${idx}`} className="border-b border-slate-100 last:border-0">
@@ -994,7 +1111,7 @@ function FaqSection() {
 function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
   return (
     <section className="py-24 bg-blue-600 relative overflow-hidden">
-      {/* Decorative background */}
+      {/* Background Grid Pattern */}
       <div className="absolute inset-0 opacity-10">
         <svg className="h-full w-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -1009,38 +1126,19 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Получите бесплатный замер и расчёт сегодня</h2>
         <p className="text-xl text-blue-100 mb-12 max-w-2xl mx-auto">Оставьте заявку, и наш инженер приедет к вам в удобное время с образцами профиля и стекла.</p>
-
+        
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl max-w-2xl mx-auto">
           <CardContent className="p-8">
             <form className="flex flex-col sm:flex-row gap-4" onSubmit={(e) => { e.preventDefault(); onOpenModal('Заявка на замер'); }}>
-              <Input placeholder="Ваше имя" className="h-14 bg-white text-slate-900 text-lg rounded-xl" />
-              <Input placeholder="Телефон" type="tel" className="h-14 bg-white text-slate-900 text-lg rounded-xl" />
+              <Input placeholder="Ваше имя" className="h-14 bg-white text-slate-900 text-lg rounded-xl" required />
+              <Input placeholder="Телефон" type="tel" className="h-14 bg-white text-slate-900 text-lg rounded-xl" required />
               <Button type="submit" className="h-14 bg-slate-900 hover:bg-slate-800 text-white text-lg px-8 rounded-xl whitespace-nowrap">
-                Вызвать замерщика
+                Вызвать инженера
               </Button>
             </form>
-            <p className="text-sm text-blue-200 mt-4 text-center">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+            <p className="text-blue-200 text-xs mt-4">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
           </CardContent>
         </Card>
-
-        <div className="mt-12 flex justify-center gap-6">
-          <Button 
-            variant="outline" 
-            onClick={() => onOpenModal('Написать в Telegram')}
-            className="bg-white/10 border-white/30 text-white hover:bg-white/20 h-12 px-6 rounded-full backdrop-blur-sm"
-          >
-            <MessageCircle className="w-5 h-5 mr-2" />
-            Написать в Telegram
-          </Button>
-          <Button 
-            variant="outline" 
-            onClick={() => onOpenModal('Написать Max')}
-            className="bg-white/10 border-white/30 text-white hover:bg-white/20 h-12 px-6 rounded-full backdrop-blur-sm"
-          >
-            <Star className="w-5 h-5 mr-2" />
-            Написать Max
-          </Button>
-        </div>
       </div>
     </section>
   );
@@ -1048,36 +1146,27 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
 
 function Footer({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
   return (
-    <footer className="bg-slate-950 text-slate-400 py-12 border-t border-slate-900">
+    <footer className="bg-slate-950 text-slate-400 py-16 border-t border-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div className="col-span-1 md:col-span-2">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 border-b border-slate-800 pb-12">
+          <div>
             <div className="flex items-center gap-2 mb-6">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">Б</div>
+              <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">Б</div>
               <span className="font-bold text-2xl tracking-tight text-white">БЕЗРАМ</span>
             </div>
             <p className="max-w-sm mb-6">Производство и монтаж безрамного остекления веранд, террас и беседок в Перми и Пермском крае.</p>
             <div className="flex gap-4">
-              <button 
-                onClick={() => onOpenModal('Написать в Telegram')}
-                className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors" 
-                title="Telegram"
-              >
+              <button onClick={() => onOpenModal('Написать в Telegram')} className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors" title="Telegram">
                 <MessageCircle className="w-5 h-5" />
               </button>
-              <button 
-                onClick={() => onOpenModal('Написать Max')}
-                className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors" 
-                title="Написать Max"
-              >
-                <Star className="w-5 h-5" />
+              <button onClick={() => onOpenModal('Написать Max')} className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors" title="Написать Max">
+                <MessageCircle className="w-5 h-5" />
               </button>
               <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-colors" title="Наш офис">
                 <MapPin className="w-5 h-5" />
               </a>
             </div>
           </div>
-          
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Контакты</h4>
             <ul className="space-y-3">
@@ -1087,7 +1176,6 @@ function Footer({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
               <li>Сб-Вс: 10:00 - 16:00</li>
             </ul>
           </div>
-
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Ссылки</h4>
             <ul className="space-y-3">
@@ -1098,8 +1186,7 @@ function Footer({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
             </ul>
           </div>
         </div>
-        
-        <div className="pt-8 border-t border-slate-800 text-sm flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center">
           <p>© {new Date().getFullYear()} БЕЗРАМ. Все права защищены.</p>
           <p className="mt-2 md:mt-0">Разработано для Перми и Пермского края</p>
         </div>
@@ -1107,4 +1194,3 @@ function Footer({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
     </footer>
   );
 }
-
