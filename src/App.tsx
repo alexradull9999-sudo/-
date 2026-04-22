@@ -43,7 +43,7 @@ export default function App() {
                 <button onClick={() => scrollToSection('prices')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Цены</button>
                 <button onClick={() => scrollToSection('faq')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">FAQ</button>
                 <div className="flex flex-col items-end">
-                  <a href="tel:+73420000000" className="text-lg font-bold text-slate-900 hover:text-blue-600 transition-colors">+7 (342) 000-00-00</a>
+                  <a href="tel:+79519387178" className="text-lg font-bold text-slate-900 hover:text-blue-600 transition-colors">+7 (951) 938-71-78</a>
                   <span className="text-xs text-slate-500">Пермь и край</span>
                 </div>
               </div>
@@ -64,7 +64,7 @@ export default function App() {
             <button onClick={() => scrollToSection('prices')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">Цены</button>
             <button onClick={() => scrollToSection('faq')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">FAQ</button>
               <div className="mt-4 px-3">
-                <a href="tel:+73420000000" className="block text-lg font-bold text-slate-900">+7 (342) 000-00-00</a>
+                <a href="tel:+79519387178" className="block text-lg font-bold text-slate-900">+7 (951) 938-71-78</a>
               </div>
           </div>
         )}
@@ -179,10 +179,16 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
                   <Label htmlFor="modal-phone">Телефон</Label>
                   <Input name="phone" id="modal-phone" type="tel" placeholder="+7 (___) ___-__-__" required className="h-12 rounded-xl" />
                 </div>
+                <div className="flex items-start space-x-2 py-2">
+                  <input type="checkbox" id="modal-consent" defaultChecked required className="mt-0.5 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500" />
+                  <Label htmlFor="modal-consent" className="text-[10px] leading-tight text-slate-500 cursor-pointer">
+                    Я соглашаюсь на обработку персональных данных и принимаю условия политики конфиденциальности
+                  </Label>
+                </div>
                 <Button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 rounded-xl text-lg font-bold mt-4"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white h-12 rounded-xl text-lg font-bold mt-2"
                 >
                   {isSubmitting ? 'Отправка...' : 'Отправить заявку'}
                 </Button>
@@ -251,9 +257,9 @@ function HeroSection({ onScrollToQuiz, onScrollToPortfolio, onOpenModal }: { onS
                 <span className="font-medium">Более 200 объектов в крае</span>
               </div>
               <div className="flex items-center gap-4">
-                <a href="tel:+73420000000" className="flex items-center gap-2 hover:text-white transition-colors">
+                <a href="tel:+79519387178" className="flex items-center gap-2 hover:text-white transition-colors">
                   <Phone className="w-5 h-5" />
-                  <span className="font-medium">+7 (342) 000-00-00</span>
+                  <span className="font-medium">+7 (951) 938-71-78</span>
                 </a>
                 <button 
                   onClick={() => onOpenModal('Написать в Telegram')}
@@ -838,6 +844,12 @@ function QuizSection() {
                         <Label htmlFor="phone">Номер телефона</Label>
                         <Input name="phone" id="phone" type="tel" placeholder="+7 (___) ___-__-__" required className="h-12" />
                       </div>
+                      <div className="flex items-start space-x-2 py-2">
+                        <input type="checkbox" id="quiz-consent" defaultChecked required className="mt-0.5 w-4 h-4 text-blue-600 border-slate-300 rounded focus:ring-blue-500" />
+                        <Label htmlFor="quiz-consent" className="text-[10px] leading-tight text-slate-500 cursor-pointer">
+                          Я соглашаюсь на обработку персональных данных
+                        </Label>
+                      </div>
                     </div>
                   </div>
                 )}
@@ -1088,7 +1100,7 @@ function PricesSection({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
             <CardContent className="p-8 text-center">
               <h3 className="text-xl font-bold text-slate-900 mb-2">Эксклюзив</h3>
               <p className="text-slate-500 mb-6">Сложные формы и дизайн</p>
-              <div className="text-4xl font-extrabold text-slate-900 mb-8">Индивидуально</div>
+              <div className="text-3xl font-extrabold text-slate-900 mb-8">Индивидуально</div>
               <ul className="space-y-3 text-left text-slate-700 mb-8">
                 <li className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
@@ -1180,7 +1192,7 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
         
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl max-w-2xl mx-auto">
           <CardContent className="p-8">
-            <form className="flex flex-col sm:flex-row gap-4" onSubmit={async (e) => { 
+            <form className="space-y-4" onSubmit={async (e) => { 
                 e.preventDefault(); 
                 const formData = new FormData(e.currentTarget as HTMLFormElement);
                 const data = {
@@ -1198,13 +1210,19 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
                 } catch (err) {}
                 onOpenModal('Заявка на замер'); 
               }}>
-              <Input name="name" placeholder="Ваше имя" className="h-14 bg-white text-slate-900 text-lg rounded-xl" required />
-              <Input name="phone" placeholder="Телефон" type="tel" className="h-14 bg-white text-slate-900 text-lg rounded-xl" required />
-              <Button type="submit" className="h-14 bg-slate-900 hover:bg-slate-800 text-white text-lg px-8 rounded-xl whitespace-nowrap">
-                Вызвать инженера
-              </Button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <Input name="name" placeholder="Ваше имя" className="h-14 bg-white text-slate-900 text-lg rounded-xl flex-1" required />
+                <Input name="phone" placeholder="Телефон" type="tel" className="h-14 bg-white text-slate-900 text-lg rounded-xl flex-1" required />
+                <Button type="submit" className="h-14 bg-slate-900 hover:bg-slate-800 text-white text-lg px-8 rounded-xl whitespace-nowrap">
+                  Вызвать инженера
+                </Button>
+              </div>
+              <div className="flex items-center justify-center space-x-2">
+                <input type="checkbox" id="cta-consent" defaultChecked required className="w-4 h-4 text-blue-600 border-white/20 rounded focus:ring-blue-500 bg-white/20" />
+                <Label htmlFor="cta-consent" className="text-[10px] text-blue-100 cursor-pointer">Я соглашаюсь на обработку персональных данных</Label>
+              </div>
             </form>
-            <p className="text-blue-200 text-xs mt-4">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
+            <p className="hidden">Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности</p>
           </CardContent>
         </Card>
       </div>
@@ -1238,7 +1256,7 @@ function Footer({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
           <div>
             <h4 className="text-white font-bold mb-4 uppercase tracking-wider text-sm">Контакты</h4>
             <ul className="space-y-3">
-              <li><a href="tel:+73420000000" className="text-lg font-medium text-white hover:text-blue-400">+7 (342) 000-00-00</a></li>
+              <li><a href="tel:+79519387178" className="text-lg font-medium text-white hover:text-blue-400">+7 (951) 938-71-78</a></li>
               <li>г. Пермь, ул. Производственная, 1</li>
               <li>Пн-Пт: 09:00 - 19:00</li>
               <li>Сб-Вс: 10:00 - 16:00</li>
@@ -1254,9 +1272,8 @@ function Footer({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
             </ul>
           </div>
         </div>
-        <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center text-sm border-t border-slate-900 pt-8">
           <p>© {new Date().getFullYear()} БЕЗРАМ. Все права защищены.</p>
-          <p className="mt-2 md:mt-0">Разработано для Перми и Пермского края</p>
         </div>
       </div>
     </footer>
