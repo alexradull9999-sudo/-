@@ -107,23 +107,39 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const data = {
+      name: formData.get('name'),
+      phone: formData.get('phone'),
+      source: `Модальное окно: ${title}`
+    };
 
     // Yandex Metrika Goal
     if (typeof (window as any).ym !== 'undefined') {
       (window as any).ym(108711441, 'reachGoal', 'send');
     }
 
-    setTimeout(() => {
+    try {
+      await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
       setIsSubmitting(false);
       setIsSuccess(true);
       setTimeout(() => {
         onClose();
         setIsSuccess(false);
       }, 3000);
-    }, 1500);
+    } catch (err) {
+      console.error(err);
+      setIsSubmitting(false);
+      setIsSuccess(true);
+    }
   };
 
   return (
@@ -157,11 +173,11 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
                   <Label htmlFor="modal-name">Ваше имя</Label>
-                  <Input id="modal-name" placeholder="Иван" required className="h-12 rounded-xl" />
+                  <Input name="name" id="modal-name" placeholder="Иван" required className="h-12 rounded-xl" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="modal-phone">Телефон</Label>
-                  <Input id="modal-phone" type="tel" placeholder="+7 (___) ___-__-__" required className="h-12 rounded-xl" />
+                  <Input name="phone" id="modal-phone" type="tel" placeholder="+7 (___) ___-__-__" required className="h-12 rounded-xl" />
                 </div>
                 <Button 
                   type="submit" 
@@ -649,24 +665,47 @@ function QuizSection() {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
 
   const handleNext = () => setStep(s => Math.min(s + 1, 5));
   const handlePrev = () => setStep(s => Math.max(s - 1, 1));
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSelect = (question: string, value: string) => {
+    setAnswers(prev => ({ ...prev, [question]: value }));
+    handleNext();
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const data = {
+      name: formData.get('name'),
+      phone: formData.get('phone'),
+      type: answers['type'],
+      details: answers,
+      source: 'Квиз на сайте'
+    };
 
     // Yandex Metrika Goal
     if (typeof (window as any).ym !== 'undefined') {
       (window as any).ym(108711441, 'reachGoal', 'send_kviz');
     }
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
       setIsSubmitting(false);
       setIsSuccess(true);
-    }, 1500);
+    } catch (err) {
+      console.error(err);
+      setIsSubmitting(false);
+      setIsSuccess(true);
+    }
   };
 
   return (
@@ -695,12 +734,12 @@ function QuizSection() {
 
           <CardContent className="p-8 md:p-12">
             {!isSuccess ? (
-              <form onSubmit={step === 5 ? handleSubmit : (e) => { e.preventDefault(); handleNext(); }}>
+              <form onSubmit={step === 5 ? handleSubmit : (e) => { e.preventDefault(); }}>
                 
                 {step === 1 && (
                   <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-500">
                     <h3 className="text-2xl font-bold text-slate-900 mb-6">Тип вашего объекта?</h3>
-                    <RadioGroup defaultValue="veranda" className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <RadioGroup defaultValue="v" className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       {[
                         { id: 'v', label: 'Загородный дом / Дача', sub: 'Веранда, терраса, беседка' },
                         { id: 'a', label: 'Квартира / Пентхаус', sub: 'Балкон, лоджия, панорама' },
@@ -709,7 +748,7 @@ function QuizSection() {
                       ].map((item, i) => (
                         <div 
                           key={i} 
-                          onClick={handleNext}
+                          onClick={() => handleSelect('type', item.label)}
                           className="flex flex-col border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative group"
                         >
                           <RadioGroupItem value={item.id} id={`type-${i}`} className="absolute right-4 top-4 group-hover:border-blue-400" />
@@ -728,7 +767,7 @@ function QuizSection() {
                       {['До 10 м²', '10–20 м²', '20–40 м²', 'Более 40 м²'].map((item, i) => (
                         <div 
                           key={i} 
-                          onClick={handleNext}
+                          onClick={() => handleSelect('size', item)}
                           className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative group"
                         >
                           <RadioGroupItem value={item} id={`size-${i}`} className="absolute right-4 group-hover:border-blue-400" />
@@ -751,7 +790,7 @@ function QuizSection() {
                       ].map((item, i) => (
                         <div 
                           key={i} 
-                          onClick={handleNext}
+                          onClick={() => handleSelect('state', item)}
                           className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative group"
                         >
                           <RadioGroupItem value={item} id={`state-${i}`} className="absolute right-4 group-hover:border-blue-400" />
@@ -774,7 +813,7 @@ function QuizSection() {
                       ].map((item, i) => (
                         <div 
                           key={i} 
-                          onClick={handleNext}
+                          onClick={() => handleSelect('priority', item)}
                           className="flex items-center space-x-2 border border-slate-200 rounded-xl p-4 hover:border-blue-400 hover:bg-blue-50/50 transition-colors cursor-pointer relative group"
                         >
                           <RadioGroupItem value={item} id={`priority-${i}`} className="absolute right-4 group-hover:border-blue-400" />
@@ -793,11 +832,11 @@ function QuizSection() {
                     <div className="space-y-4 max-w-md">
                       <div className="space-y-2">
                         <Label htmlFor="name">Ваше имя</Label>
-                        <Input id="name" placeholder="Как к вам обращаться?" required className="h-12" />
+                        <Input name="name" id="name" placeholder="Как к вам обращаться?" required className="h-12" />
                       </div>
                       <div className="space-y-2">
                         <Label htmlFor="phone">Номер телефона</Label>
-                        <Input id="phone" type="tel" placeholder="+7 (___) ___-__-__" required className="h-12" />
+                        <Input name="phone" id="phone" type="tel" placeholder="+7 (___) ___-__-__" required className="h-12" />
                       </div>
                     </div>
                   </div>
@@ -1141,9 +1180,26 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
         
         <Card className="bg-white/10 backdrop-blur-md border-white/20 shadow-2xl max-w-2xl mx-auto">
           <CardContent className="p-8">
-            <form className="flex flex-col sm:flex-row gap-4" onSubmit={(e) => { e.preventDefault(); onOpenModal('Заявка на замер'); }}>
-              <Input placeholder="Ваше имя" className="h-14 bg-white text-slate-900 text-lg rounded-xl" required />
-              <Input placeholder="Телефон" type="tel" className="h-14 bg-white text-slate-900 text-lg rounded-xl" required />
+            <form className="flex flex-col sm:flex-row gap-4" onSubmit={async (e) => { 
+                e.preventDefault(); 
+                const formData = new FormData(e.currentTarget as HTMLFormElement);
+                const data = {
+                  name: formData.get('name'),
+                  phone: formData.get('phone'),
+                  source: 'Финальный CTA (Вызов инженера)'
+                };
+                
+                try {
+                  await fetch('/api/lead', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                  });
+                } catch (err) {}
+                onOpenModal('Заявка на замер'); 
+              }}>
+              <Input name="name" placeholder="Ваше имя" className="h-14 bg-white text-slate-900 text-lg rounded-xl" required />
+              <Input name="phone" placeholder="Телефон" type="tel" className="h-14 bg-white text-slate-900 text-lg rounded-xl" required />
               <Button type="submit" className="h-14 bg-slate-900 hover:bg-slate-800 text-white text-lg px-8 rounded-xl whitespace-nowrap">
                 Вызвать инженера
               </Button>
