@@ -3,6 +3,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import axios from "axios";
+import compression from "compression";
 
 dotenv.config();
 
@@ -13,7 +14,19 @@ async function startServer() {
   const app = express();
   const PORT = process.env.PORT || 3000;
 
+  app.use(compression());
   app.use(express.json());
+
+  // Logging middleware
+  app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+  });
+
+  // Health check
+  app.get("/api/health", (req, res) => {
+    res.json({ status: "ok", env: process.env.NODE_ENV });
+  });
 
   // API Route for Leads
   app.post("/api/lead", async (req, res) => {
@@ -68,7 +81,19 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
+    
+    // Настройка кеширования: картинки и шрифты кешируются на 1 год
+    app.use(express.static(distPath, {
+      maxAge: "1d", // Кеш на 1 день для всей статики (можно увеличить до 365d)
+      etag: true,
+      lastModified: true,
+      setHeaders: (res, path) => {
+        if (path.match(/\.(js|css|woff2|jpg|jpeg|png|gif|svg|webp)$/)) {
+          res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 год для медиа
+        }
+      }
+    }));
+
     app.get("*", (req, res) => {
       res.sendFile(path.join(distPath, "index.html"));
     });

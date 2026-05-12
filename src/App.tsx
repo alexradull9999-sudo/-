@@ -124,11 +124,14 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
     }
 
     try {
-      await fetch('/api/lead', {
+      const response = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
+      
+      if (!response.ok) throw new Error('Failed to send lead');
+      
       setIsSubmitting(false);
       setIsSuccess(true);
       setTimeout(() => {
@@ -138,7 +141,7 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
     } catch (err) {
       console.error(err);
       setIsSubmitting(false);
-      setIsSuccess(true);
+      alert('Ошибка при отправке заявки. Пожалуйста, попробуйте еще раз или свяжитесь с нами по телефону.');
     }
   };
 
@@ -700,17 +703,20 @@ function QuizSection() {
     }
 
     try {
-      await fetch('/api/lead', {
+      const response = await fetch('/api/lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
+
+      if (!response.ok) throw new Error('Failed to send lead');
+
       setIsSubmitting(false);
       setIsSuccess(true);
     } catch (err) {
       console.error(err);
       setIsSubmitting(false);
-      setIsSuccess(true);
+      alert('Ошибка при отправке заявки. Пожалуйста, попробуйте еще раз.');
     }
   };
 
@@ -1202,14 +1208,17 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
                 };
                 
                 try {
-                  await fetch('/api/lead', {
+                  const response = await fetch('/api/lead', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
                   });
-                } catch (err) {}
-                onOpenModal('Заявка на замер'); 
-              }}>
+                  if (!response.ok) throw new Error('Failed to send lead');
+                  onOpenModal('Заявка на замер'); 
+                } catch (err) {
+                  console.error(err);
+                  alert('Ошибка при отправке заявки. Пожалуйста, попробуйте еще раз или свяжитесь с нами по телефону.');
+                }              }}>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Input name="name" placeholder="Ваше имя" className="h-14 bg-white text-slate-900 text-lg rounded-xl flex-1" required />
                 <Input name="phone" placeholder="Телефон" type="tel" className="h-14 bg-white text-slate-900 text-lg rounded-xl flex-1" required />
