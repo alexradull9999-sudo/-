@@ -25,11 +25,29 @@ async function startServer() {
     next();
   });
 
-  // API Route for Leads - Unique name to avoid any platform interference
-  app.post("/send-lead-secure", async (req, res) => {
-    console.log(`[${new Date().toISOString()}] Incoming POST request to /send-lead-secure`);
-    console.log("Body:", JSON.stringify(req.body));
+  // API Route for Leads - Improved robustness and explicit CORS/OPTIONS handling
+  app.all(["/submit-contact", "/submit-contact/"], async (req, res) => {
+    console.log(`[${new Date().toISOString()}] Request: ${req.method} ${req.url}`);
     
+    // Explicit CORS for this endpoint
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+
+    if (req.method === 'GET') {
+      return res.json({ message: "Contact endpoint is up. Please use POST to send data.", timestamp: new Date().toISOString() });
+    }
+
+    if (req.method !== 'POST') {
+      console.warn(`[${new Date().toISOString()}] Method not allowed: ${req.method}`);
+      return res.status(405).json({ success: false, error: "Method Not Allowed. Please use POST." });
+    }
+
+    console.log("Processing POSS lead request with body:", JSON.stringify(req.body));
     const { name, phone, type, details, source } = req.body;
 
     if (!phone) {
@@ -75,11 +93,6 @@ async function startServer() {
       console.error("Error processing lead:", error.message);
       res.status(500).json({ success: false, error: "Failed to process lead", details: error.message });
     }
-  });
-
-  // Debug route
-  app.get("/send-lead-secure", (req, res) => {
-    res.json({ message: "Lead endpoint is up. Please use POST to send data.", timestamp: new Date().toISOString() });
   });
 
   // Health check

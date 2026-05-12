@@ -124,7 +124,7 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
     }
 
     try {
-      const response = await fetch('/send-lead-secure', {
+      const response = await fetch('/submit-contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -703,7 +703,7 @@ function QuizSection() {
     }
 
     try {
-      const response = await fetch('/send-lead-secure', {
+      const response = await fetch('/submit-contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
@@ -1208,7 +1208,7 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
                 };
                 
                 try {
-                  const response = await fetch('/send-lead-secure', {
+                  const response = await fetch('/submit-contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(data)
