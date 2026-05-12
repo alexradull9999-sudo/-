@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
-  const PORT = process.env.PORT || 80;
+  const PORT = process.env.NODE_ENV === "production" ? 80 : (process.env.PORT || 3000);
 
   app.use(express.json());
 
