@@ -5,10 +5,9 @@ meta:
     version: 20
 
 build:
-  install: npm install
   command: npm run build
   artifacts:
-    dist: dist
+    - dist
 
 run:
   command: node dist/index.js
