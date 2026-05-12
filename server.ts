@@ -4,7 +4,6 @@ import path from "path";
 import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import axios from "axios";
-import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -13,7 +12,7 @@ const __dirname = path.dirname(__filename);
 
 async function startServer() {
   const app = express();
-  const PORT = 3000;
+  const PORT = process.env.PORT || 3000;
 
   app.use(express.json());
 
