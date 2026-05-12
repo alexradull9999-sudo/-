@@ -25,9 +25,14 @@ async function startServer() {
     next();
   });
 
-  // API Route for Leads
-  app.post("/api/lead", async (req, res) => {
-    console.log("Incoming lead request:", req.body);
+  // API Route for Leads - Re-named to avoid platform /api interception
+  app.all(["/api/lead", "/api/lead/", "/submit-lead", "/submit-lead/"], async (req, res) => {
+    console.log(`[${new Date().toISOString()}] Incoming ${req.method} request to ${req.url}`);
+    
+    if (req.method !== 'POST') {
+      return res.status(405).json({ success: false, error: "Method Not Allowed. Use POST." });
+    }
+
     const { name, phone, type, details, source } = req.body;
 
     if (!phone) {
