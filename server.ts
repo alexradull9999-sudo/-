@@ -25,29 +25,25 @@ async function startServer() {
     next();
   });
 
-  // API Route for Leads - Improved robustness and explicit CORS/OPTIONS handling
-  app.all(["/submit-contact", "/submit-contact/"], async (req, res) => {
-    console.log(`[${new Date().toISOString()}] Request: ${req.method} ${req.url}`);
+  // Preflight handler
+  app.options(["/submit-contact", "/submit-contact/"], (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.sendStatus(204);
+  });
+
+  // API Route for Leads - Maximum robustness
+  app.post(["/submit-contact", "/submit-contact/"], async (req, res) => {
+    console.log(`[${new Date().toISOString()}] Form Submission POST received at ${req.url}`);
+    console.log("Headers:", JSON.stringify(req.headers));
+    console.log("Body:", JSON.stringify(req.body));
     
-    // Explicit CORS for this endpoint
+    // Explicit CORS for this endpoint (redundant but safe)
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-    if (req.method === 'OPTIONS') {
-      return res.sendStatus(204);
-    }
-
-    if (req.method === 'GET') {
-      return res.json({ message: "Contact endpoint is up. Please use POST to send data.", timestamp: new Date().toISOString() });
-    }
-
-    if (req.method !== 'POST') {
-      console.warn(`[${new Date().toISOString()}] Method not allowed: ${req.method}`);
-      return res.status(405).json({ success: false, error: "Method Not Allowed. Please use POST." });
-    }
-
-    console.log("Processing POSS lead request with body:", JSON.stringify(req.body));
     const { name, phone, type, details, source } = req.body;
 
     if (!phone) {
@@ -93,6 +89,11 @@ async function startServer() {
       console.error("Error processing lead:", error.message);
       res.status(500).json({ success: false, error: "Failed to process lead", details: error.message });
     }
+  });
+
+  // Debug route
+  app.get(["/submit-contact", "/submit-contact/"], (req, res) => {
+    res.json({ message: "Contact endpoint is up. Please use POST to send data.", timestamp: new Date().toISOString() });
   });
 
   // Health check
