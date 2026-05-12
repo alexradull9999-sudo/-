@@ -25,14 +25,11 @@ async function startServer() {
     next();
   });
 
-  // API Route for Leads - Re-named to avoid platform /api interception
-  app.all(["/api/lead", "/api/lead/", "/submit-lead", "/submit-lead/"], async (req, res) => {
-    console.log(`[${new Date().toISOString()}] Incoming ${req.method} request to ${req.url}`);
+  // API Route for Leads - Unique name to avoid any platform interference
+  app.post("/send-lead-secure", async (req, res) => {
+    console.log(`[${new Date().toISOString()}] Incoming POST request to /send-lead-secure`);
+    console.log("Body:", JSON.stringify(req.body));
     
-    if (req.method !== 'POST') {
-      return res.status(405).json({ success: false, error: "Method Not Allowed. Use POST." });
-    }
-
     const { name, phone, type, details, source } = req.body;
 
     if (!phone) {
@@ -58,8 +55,6 @@ async function startServer() {
           parse_mode: 'Markdown'
         });
         console.log("Telegram notification sent");
-      } else {
-        console.warn("TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is missing");
       }
 
       // 2. Send to Google Sheets (via Webhook)
@@ -80,6 +75,11 @@ async function startServer() {
       console.error("Error processing lead:", error.message);
       res.status(500).json({ success: false, error: "Failed to process lead", details: error.message });
     }
+  });
+
+  // Debug route
+  app.get("/send-lead-secure", (req, res) => {
+    res.json({ message: "Lead endpoint is up. Please use POST to send data.", timestamp: new Date().toISOString() });
   });
 
   // Health check
