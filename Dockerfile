@@ -3,16 +3,14 @@ FROM node:20-slim AS builder
 
 WORKDIR /app
 
+# Увеличиваем лимит памяти для стабильной сборки
+ENV NODE_OPTIONS="--max-old-space-size=1024"
+
 COPY package*.json ./
 RUN npm install
 
 COPY . .
-
-# Ограничиваем использование памяти для Vite build
-RUN node --max-old-space-size=400 ./node_modules/vite/bin/vite.js build
-
-# Собираем серверную часть
-RUN npx esbuild server.ts --bundle --platform=node --format=esm --outfile=dist/index.js --external:vite --minify
+RUN npm run build
 
 # Run stage
 FROM node:20-slim
@@ -24,8 +22,9 @@ COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 
 ENV NODE_ENV=production
-ENV PORT=80
+# Timeweb Cloud обычно использует переменную PORT
+ENV PORT=3000
 
-EXPOSE 80
+EXPOSE 3000
 
 CMD ["node", "dist/index.js"]
