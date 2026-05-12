@@ -221,7 +221,7 @@ function HeroSection({ onScrollToQuiz, onScrollToPortfolio, onOpenModal }: { onS
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/images/hero.png" 
+          src="/images/hero.webp" 
           alt="Застекленная веранда" 
           className="w-full h-full object-cover"
           fetchPriority="high"
@@ -560,7 +560,7 @@ function PainSolutionSection() {
           {/* Before */}
           <div className="relative rounded-2xl overflow-hidden group">
             <img 
-              src="/images/bezram%20do.png" 
+              src="/images/bezram%20do.webp" 
               alt="Открытая веранда до остекления" 
               className="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-105"
               loading="lazy"
@@ -579,7 +579,7 @@ function PainSolutionSection() {
           {/* After */}
           <div className="relative rounded-2xl overflow-hidden group">
             <img 
-              src="/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_78b0c9a0-0b01-4abf-9ef2-ab482ba01e95_0.png" 
+              src="/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_78b0c9a0-0b01-4abf-9ef2-ab482ba01e95_0.webp" 
               alt="Застекленная веранда" 
               className="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-105"
               loading="lazy"
@@ -903,12 +903,12 @@ function QuizSection() {
 function PortfolioSection() {
   const [filter, setFilter] = useState('all');
   const projects = [
-    { id: 1, type: 'veranda', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_0.png', title: 'Пермь, посёлок Заречный', desc: '18 м, монтаж 2 дня' },
-    { id: 2, type: 'terrace', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_1.png', title: 'Краснокамск', desc: '24 м, монтаж 3 дня' },
-    { id: 3, type: 'gazebo', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_2.png', title: 'Добрянка', desc: '12 м, монтаж 1 день' },
-    { id: 4, type: 'veranda', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_3.png', title: 'Пермь, Мотовилиха', desc: '20 м, монтаж 2 дня' },
-    { id: 5, type: 'terrace', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_39987f94-2761-4e87-a5e7-2aea595b8dc3_0.png', title: 'Полазна', desc: '30 м, монтаж 3 дня' },
-    { id: 6, type: 'gazebo', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_64c9fb53-ffc7-4e9b-9e2f-5dcc82b8be4f_3.png', title: 'Пермь, Гайва', desc: '15 м, монтаж 2 дня' }
+    { id: 1, type: 'veranda', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_0.webp', title: 'Пермь, посёлок Заречный', desc: '18 м, монтаж 2 дня' },
+    { id: 2, type: 'terrace', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_1.webp', title: 'Краснокамск', desc: '24 м, монтаж 3 дня' },
+    { id: 3, type: 'gazebo', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_2.webp', title: 'Добрянка', desc: '12 м, монтаж 1 день' },
+    { id: 4, type: 'veranda', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_1ea6924f-eac9-46a9-878b-005c4714e372_3.webp', title: 'Пермь, Мотовилиха', desc: '20 м, монтаж 2 дня' },
+    { id: 5, type: 'terrace', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_39987f94-2761-4e87-a5e7-2aea595b8dc3_0.webp', title: 'Полазна', desc: '30 м, монтаж 3 дня' },
+    { id: 6, type: 'gazebo', img: '/images/u9279868684_httpss.mj.rundcyeqX0vEKM_httpss.mj.runEmCR2wll9BM_64c9fb53-ffc7-4e9b-9e2f-5dcc82b8be4f_3.webp', title: 'Пермь, Гайва', desc: '15 м, монтаж 2 дня' }
   ];
 
   const filteredProjects = filter === 'all' ? projects : projects.filter(p => p.type === filter);

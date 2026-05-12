@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import dotenv from "dotenv";
 import axios from "axios";
 import compression from "compression";
+import cors from "cors";
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ async function startServer() {
   const app = express();
   const PORT = process.env.PORT || 3000;
 
+  app.use(cors());
   app.use(compression());
   app.use(express.json());
 
@@ -23,14 +25,14 @@ async function startServer() {
     next();
   });
 
-  // Health check
-  app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", env: process.env.NODE_ENV });
-  });
-
   // API Route for Leads
   app.post("/api/lead", async (req, res) => {
+    console.log("Incoming lead request:", req.body);
     const { name, phone, type, details, source } = req.body;
+
+    if (!phone) {
+      return res.status(400).json({ success: false, error: "Phone is required" });
+    }
 
     const message = `
 🚀 *Новая заявка!*
@@ -50,6 +52,9 @@ async function startServer() {
           text: message,
           parse_mode: 'Markdown'
         });
+        console.log("Telegram notification sent");
+      } else {
+        console.warn("TELEGRAM_BOT_TOKEN or TELEGRAM_CHAT_ID is missing");
       }
 
       // 2. Send to Google Sheets (via Webhook)
@@ -62,16 +67,27 @@ async function startServer() {
           type: type || '',
           details: JSON.stringify(details || {})
         });
+        console.log("Google Sheets notification sent");
       }
 
       res.status(200).json({ success: true });
-    } catch (error) {
-      console.error("Error processing lead:", error);
-      res.status(500).json({ success: false, error: "Failed to process lead" });
+    } catch (error: any) {
+      console.error("Error processing lead:", error.message);
+      res.status(500).json({ success: false, error: "Failed to process lead", details: error.message });
     }
   });
 
-  // Vite middleware for development
+  // Health check
+  app.get("/api/health", (req, res) => {
+    res.json({ status: "ok", env: process.env.NODE_ENV });
+  });
+
+  // Handle other /api routes
+  app.all("/api/*", (req, res) => {
+    res.status(404).json({ error: `Path ${req.url} not found or method ${req.method} not supported` });
+  });
+
+  // Vite/Static
   if (process.env.NODE_ENV !== "production") {
     const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
@@ -82,14 +98,13 @@ async function startServer() {
   } else {
     const distPath = path.join(process.cwd(), "dist");
     
-    // Настройка кеширования: картинки и шрифты кешируются на 1 год
     app.use(express.static(distPath, {
-      maxAge: "1d", // Кеш на 1 день для всей статики (можно увеличить до 365d)
+      maxAge: "1d",
       etag: true,
       lastModified: true,
       setHeaders: (res, path) => {
         if (path.match(/\.(js|css|woff2|jpg|jpeg|png|gif|svg|webp)$/)) {
-          res.setHeader('Cache-Control', 'public, max-age=31536000'); // 1 год для медиа
+          res.setHeader('Cache-Control', 'public, max-age=31536000');
         }
       }
     }));
@@ -99,7 +114,7 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
+  app.listen(Number(PORT), "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }
