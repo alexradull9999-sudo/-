@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "vite build && esbuild server.ts --bundle --platform=node --format=esm --outfile=dist/server.js --external:vite",
+    "build": "vite build && esbuild server.ts --bundle --platform=node --format=esm --outfile=dist/index.js --external:vite",
     "preview": "vite preview",
-    "start": "NODE_ENV=production node dist/server.js",
+    "start": "NODE_ENV=production node dist/index.js",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
   },

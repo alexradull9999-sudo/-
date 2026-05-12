@@ -7,7 +7,9 @@ meta:
 build:
   install: npm install
   command: npm run build
+  artifacts:
+    dist: dist
 
 run:
-  command: npm start
+  command: node dist/index.js
   containerPort: 80
