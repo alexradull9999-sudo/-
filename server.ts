@@ -19,11 +19,44 @@ async function startServer() {
   app.use(cors());
   app.use(compression());
   app.use(express.json());
-
-  // Logging middleware
+  
+  // Logging middleware with status code after response
   app.use((req, res, next) => {
-    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    const start = Date.now();
+    const timestamp = new Date().toISOString();
+    
+    // Skip logging for noisy vite/hmr requests
+    if (req.url.includes('hot-update') || req.url.includes('vite')) {
+      return next();
+    }
+
+    res.on('finish', () => {
+      const duration = Date.now() - start;
+      if (req.url.startsWith('/api')) {
+        console.log(`[${timestamp}] ${req.method} ${req.url} - ${res.statusCode} (${duration}ms)`);
+      } else if (res.statusCode >= 400) {
+        console.warn(`[${timestamp}] ${req.method} ${req.url} - ${res.statusCode} (FAILED)`);
+      }
+    });
     next();
+  });
+
+  // Serve static files from the 'public' directory
+  const publicPath = path.join(process.cwd(), "public");
+  app.use(express.static(publicPath));
+  
+  // Specific image serving with explicit paths
+  app.use("/images", express.static(path.join(publicPath, "images")));
+  
+  // Backup image handler to help debug 404s
+  app.get("/images/:filename", (req, res) => {
+    const filePath = path.join(publicPath, "images", req.params.filename);
+    res.sendFile(filePath, (err) => {
+      if (err) {
+        console.warn(`[Server] Image request failed: ${req.params.filename} at ${filePath}`);
+        res.status(404).json({ error: "Image not found" });
+      }
+    });
   });
 
   // API Route for Leads - More integrations and more robust path
@@ -171,20 +204,72 @@ async function startServer() {
       }
 
       // 7. Google Sheets
-      if (process.env.GOOGLE_SHEETS_WEBHOOK_URL) {
+      const SHEETS_URL = (process.env.GOOGLE_SHEETS_WEBHOOK_URL || "https://script.google.com/macros/s/AKfycbzNEEa_VmqsGaV2JGuX_bnCvUccbQbAEBtSkGhrsIUU5l_nYKCDTbF_v_0nidGzRgkY/exec").trim();
+
+      if (SHEETS_URL) {
         try {
-          await axios.post(process.env.GOOGLE_SHEETS_WEBHOOK_URL, {
+          const payload = JSON.stringify({
             date: new Date().toLocaleString("ru-RU"),
             name: name || '',
             phone: phone || '',
-            source: source || '',
+            source: source || 'Website',
             type: type || '',
-            details: JSON.stringify(details || {})
+            details: typeof details === 'object' ? JSON.stringify(details) : (details || '')
           });
-          results.google_sheets = "sent";
+
+          const headers = {
+            'Content-Type': 'text/plain;charset=utf-8',
+          };
+
+          console.log(`[GoogleSheets] Sending to: ${SHEETS_URL}`);
+
+          let finalResponse: any = null;
+
+          try {
+            // Первый запрос — ловим 302 как ошибку
+            finalResponse = await axios.post(SHEETS_URL, payload, {
+              headers,
+              maxRedirects: 0,
+              validateStatus: (status) => status >= 200 && status < 300, // 302 → бросит ошибку
+            });
+          } catch (redirectError: any) {
+            const status = redirectError.response?.status;
+            const location = redirectError.response?.headers?.location;
+
+            if (status === 302 && location) {
+              console.log(`[GoogleSheets] 302 redirect detected. Fetching result from: ${location.substring(0, 80)}...`);
+
+              // Google Apps Script requires a GET request to the redirect URL to see the output
+              finalResponse = await axios.get(location, {
+                headers: { 'Accept': 'application/json' },
+                maxRedirects: 5,
+                validateStatus: (s) => s < 500,
+              });
+            } else {
+              // Не редирект — пробрасываем ошибку дальше
+              throw redirectError;
+            }
+          }
+
+          if (finalResponse && finalResponse.status >= 200 && finalResponse.status < 400) {
+            results.google_sheets = "sent";
+            console.log(`[GoogleSheets] Success! Status: ${finalResponse.status}`, finalResponse.data);
+          } else {
+            const st = finalResponse?.status ?? 'unknown';
+            console.error(`[GoogleSheets] Failed. Status: ${st}`, finalResponse?.data);
+            results.google_sheets = `error: ${st}`;
+          }
+
         } catch (e: any) {
-          results.google_sheets = `error: ${e.message}`;
+          const status = e.response?.status;
+          console.error(`[GoogleSheets] Request Error: ${status ?? 'No Status'} ${e.message}`);
+          if (e.response?.data) {
+            console.error(`[GoogleSheets] Error Data:`, e.response.data);
+          }
+          results.google_sheets = `error: ${status ?? e.message}`;
         }
+      } else {
+        results.google_sheets = "skipped: URL not set";
       }
 
       console.log("Lead processing results:", JSON.stringify(results));
@@ -196,8 +281,23 @@ async function startServer() {
   });
 
   // Health check
-  app.get("/api/health", (req, res) => {
-    res.json({ status: "ok", env: process.env.NODE_ENV, integrations: {
+  app.get("/api/health", async (req, res) => {
+    const imagesPath = path.join(process.cwd(), "public", "images");
+    let images: string[] = [];
+    try {
+      const fs = await import("fs/promises");
+      images = await fs.readdir(imagesPath);
+    } catch (e) {
+      console.error("Error reading images dir:", e);
+    }
+    
+    res.json({ 
+      status: "ok", 
+      env: process.env.NODE_ENV, 
+      cwd: process.cwd(),
+      __dirname,
+      imagesFound: images,
+      integrations: {
       telegram: !!process.env.TELEGRAM_BOT_TOKEN,
       discord: !!process.env.DISCORD_WEBHOOK_URL,
       email: !!process.env.SMTP_HOST,
