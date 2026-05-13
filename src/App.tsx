@@ -8,6 +8,30 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CheckCircle2, Phone, MessageCircle, Shield, Clock, ThermometerSnowflake, Ruler, Factory, MapPin, Star, ArrowRight, Menu, X, Home, Building2, Tent, Maximize, CloudRain, Sun, DoorOpen, Leaf, Waves, Utensils, Briefcase, ArrowUpCircle } from "lucide-react";
 
+async function submitToGoogleForms(data: {
+  name: string; phone: string; source?: string; type?: string; details?: any;
+}) {
+  const FORM_ID = "1B6Th3_1aFr27ECFBqhlruuOvwmvly7GySVikTUQunEE";
+  const body = new URLSearchParams({
+    "entry.854645492": new Date().toLocaleString("ru-RU"),
+    "entry.1183461086": data.name || "",
+    "entry.1386631220": data.phone || "",
+    "entry.917035463": data.source || "Website",
+    "entry.69866812":  data.type || "",
+    "entry.1434228094": typeof data.details === 'object' ? JSON.stringify(data.details) : (data.details || ""),
+  });
+  try {
+    await fetch(`https://docs.google.com/forms/d/${FORM_ID}/formResponse`, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString(),
+    });
+  } catch (e) {
+    console.warn("[GoogleForms] error:", e);
+  }
+}
+
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -124,24 +148,30 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
     }
 
     try {
-      const response = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-      
-      if (!response.ok) throw new Error('Failed to send lead');
-      
+      // Отправляем параллельно — сервер + Google Forms напрямую из браузера
+      await Promise.allSettled([
+        fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        }),
+        submitToGoogleForms({
+          name: data.name as string,
+          phone: data.phone as string,
+          source: data.source as string,
+        })
+      ]);
+
       setIsSubmitting(false);
       setIsSuccess(true);
-      setTimeout(() => {
-        onClose();
-        setIsSuccess(false);
+      setTimeout(() => { 
+        onClose(); 
+        setIsSuccess(false); 
       }, 3000);
     } catch (err) {
       console.error(err);
       setIsSubmitting(false);
-      alert('Ошибка при отправке заявки. Пожалуйста, попробуйте еще раз или свяжитесь с нами по телефону.');
+      alert('Ошибка. Позвоните нам: +7 (951) 938-71-78');
     }
   };
 
@@ -703,20 +733,27 @@ function QuizSection() {
     }
 
     try {
-      const response = await fetch('/api/lead', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data)
-      });
-
-      if (!response.ok) throw new Error('Failed to send lead');
+      await Promise.allSettled([
+        fetch('/api/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        }),
+        submitToGoogleForms({
+          name: data.name as string,
+          phone: data.phone as string,
+          source: data.source as string,
+          type: data.type as string,
+          details: data.details
+        })
+      ]);
 
       setIsSubmitting(false);
       setIsSuccess(true);
     } catch (err) {
       console.error(err);
       setIsSubmitting(false);
-      alert('Ошибка при отправке заявки. Пожалуйста, попробуйте еще раз.');
+      alert('Ошибка. Позвоните нам: +7 (951) 938-71-78');
     }
   };
 
@@ -1208,16 +1245,22 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
                 };
                 
                 try {
-                  const response = await fetch('/api/lead', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                  });
-                  if (!response.ok) throw new Error('Failed to send lead');
-                  onOpenModal('Заявка на замер'); 
+                  await Promise.allSettled([
+                    fetch('/api/lead', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify(data)
+                    }),
+                    submitToGoogleForms({
+                      name: data.name as string,
+                      phone: data.phone as string,
+                      source: data.source as string,
+                    })
+                  ]);
+                  onOpenModal('Заявка на замер');
                 } catch (err) {
                   console.error(err);
-                  alert('Ошибка при отправке заявки. Пожалуйста, попробуйте еще раз или свяжитесь с нами по телефону.');
+                  alert('Ошибка. Позвоните нам: +7 (951) 938-71-78');
                 }              }}>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Input name="name" placeholder="Ваше имя" className="h-14 bg-white text-slate-900 text-lg rounded-xl flex-1" required />
