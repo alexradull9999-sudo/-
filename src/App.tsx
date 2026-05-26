@@ -148,9 +148,9 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
     }
 
     try {
-      // Отправляем параллельно — сервер + Google Forms напрямую из браузера
+      // Отправляем параллельно — PHP + Google Forms напрямую из браузера
       await Promise.allSettled([
-        fetch('/api/lead', {
+        fetch('/send.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
@@ -734,7 +734,7 @@ function QuizSection() {
 
     try {
       await Promise.allSettled([
-        fetch('/api/lead', {
+        fetch('/send.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
@@ -1246,7 +1246,7 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
                 
                 try {
                   await Promise.allSettled([
-                    fetch('/api/lead', {
+                    fetch('/send.php', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify(data)

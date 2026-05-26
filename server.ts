@@ -59,8 +59,8 @@ async function startServer() {
     });
   });
 
-  // API Route for Leads - More integrations and more robust path
-  app.all(["/api/lead", "/api/lead/"], async (req, res) => {
+  // API Route for Leads - Map both standard route and send.php for local development support
+  app.all(["/api/lead", "/api/lead/", "/send.php"], async (req, res) => {
     console.log(`[${new Date().toISOString()}] Request to ${req.url} with method ${req.method}`);
     
     // Explicit CORS
