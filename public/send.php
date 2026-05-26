@@ -46,7 +46,7 @@ define('TELEGRAM_BOT_TOKEN', getenv('TELEGRAM_BOT_TOKEN') ?: '8097935111:AAHL0Oa
 define('TELEGRAM_CHAT_ID', getenv('TELEGRAM_CHAT_ID') ?: '5874913931');   // Замените на ID вашего чата или канала
 
 // 2. Discord Webhook
-define('DISCORD_WEBHOOK_URL', getenv('DISCORD_WEBHOOK_URL') ?: ''); 
+define('DISCORD_WEBHOOK_URL', getenv('DISCORD_WEBHOOK_URL') ?: 'https://discord.com/api/webhooks/1503981587342037032/ozZDR5YSbaX0UcPOfQ-itJR2oFAfdfVzh_TbfIT2YtHwIs6hO5am_dsFYXw2jZmSR5Up'); 
 
 // 3. Настройки Почты (Email)
 define('EMAIL_TO', getenv('EMAIL_TO') ?: 'alexradull9999@gmail.com');             // Кому отправлять письма
