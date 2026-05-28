@@ -724,20 +724,18 @@ function AdvantagesSection() {
 }
 
 function CalculatorSection({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
-  const [objectType, setObjectType] = useState<'veranda' | 'balcony' | 'gazebo'>('veranda');
+  const [glazingType, setGlazingType] = useState<'fixed' | 'sliding'>('sliding');
   const [width, setWidth] = useState<number>(5);
   const [height, setHeight] = useState<number>(2.5);
+  const [includeInstallation, setIncludeInstallation] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const prices: Record<'veranda' | 'balcony' | 'gazebo', number> = {
-    veranda: 3200,
-    balcony: 2800,
-    gazebo: 3500,
-  };
-
   const area = width * height;
-  const estimatedCost = Math.round(area * prices[objectType]);
+  const pricePerMeter = glazingType === 'fixed' ? 12000 : 30000;
+  const baseCost = Math.round(area * pricePerMeter);
+  const installationCost = includeInstallation ? Math.round(baseCost * 0.2) : 0;
+  const estimatedCost = baseCost + installationCost;
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -747,11 +745,15 @@ function CalculatorSection({ onOpenModal }: { onOpenModal: (t?: string) => void 
     const data = {
       name: formData.get('name'),
       phone: formData.get('phone'),
-      type: `Калькулятор: ${objectType === 'veranda' ? 'Веранда' : objectType === 'balcony' ? 'Балкон' : 'Беседка'}`,
+      type: `Калькулятор: ${glazingType === 'fixed' ? 'Глухое остекление' : 'Раздвижное остекление'}`,
       details: {
         width: `${width} м`,
         height: `${height} м`,
         area: `${area.toFixed(1)} м²`,
+        glazingType: glazingType === 'fixed' ? 'Глухое (12 000 ₽/м²)' : 'Раздвижное (30 000 ₽/м²)',
+        baseCost: `${baseCost.toLocaleString()} ₽`,
+        installation: includeInstallation ? 'Да (+20% стоимости)' : 'Нет',
+        installationCost: `${installationCost.toLocaleString()} ₽`,
         estimatedCost: `${estimatedCost.toLocaleString()} ₽`
       },
       source: 'Интерактивный калькулятор'
@@ -801,25 +803,32 @@ function CalculatorSection({ onOpenModal }: { onOpenModal: (t?: string) => void 
           {/* Слайдеры и Опции */}
           <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-slate-100 space-y-8">
             <div className="space-y-4">
-              <Label className="text-base font-bold text-slate-900">1. Выберите тип вашего объекта</Label>
-              <div className="grid grid-cols-3 gap-3">
+              <Label className="text-base font-bold text-slate-900">1. Выберите тип остекления</Label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {[
-                  { id: 'veranda', label: 'Веранда / Терраса', icon: <Home className="w-5 h-5 mx-auto mb-1" /> },
-                  { id: 'balcony', label: 'Балкон / Лоджия', icon: <Building2 className="w-5 h-5 mx-auto mb-1" /> },
-                  { id: 'gazebo', label: 'Беседка / Гриль', icon: <Tent className="w-5 h-5 mx-auto mb-1" /> },
+                  { id: 'fixed', label: 'Глухое остекление', price: '12 000 ₽ / м²', desc: 'Прочные светопрозрачные стены', icon: <Shield className="w-5 h-5 mx-auto mb-1 text-blue-600" /> },
+                  { id: 'sliding', label: 'Раздвижное остекление', price: '30 000 ₽ / м²', desc: 'Створки сдвигаются в сторону', icon: <Maximize className="w-5 h-5 mx-auto mb-1 text-blue-600" /> },
                 ].map((t) => (
                   <button
                     key={t.id}
-                    onClick={() => setObjectType(t.id as any)}
+                    onClick={() => setGlazingType(t.id as any)}
                     type="button"
-                    className={`p-4 rounded-xl border text-center transition-all ${
-                      objectType === t.id
-                        ? 'border-blue-600 bg-blue-50/50 text-blue-700 font-bold shadow-sm'
-                        : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                    className={`p-5 rounded-2xl border text-center transition-all flex flex-col justify-between items-center ${
+                      glazingType === t.id
+                        ? 'border-blue-600 bg-blue-50/50 text-blue-900 font-bold shadow-md ring-2 ring-blue-600/10'
+                        : 'border-slate-200 hover:border-slate-300 text-slate-600 bg-white'
                     }`}
                   >
-                    {t.icon}
-                    <span className="text-xs sm:text-sm block mt-1">{t.label}</span>
+                    <div className="w-full">
+                      {t.icon}
+                      <span className="text-sm sm:text-base font-bold block mt-2 text-slate-900">{t.label}</span>
+                      <span className="text-xs text-slate-500 block mt-1 leading-normal">{t.desc}</span>
+                    </div>
+                    <span className={`text-xs px-3 py-1 rounded-full mt-4 font-bold block w-full text-center ${
+                      glazingType === t.id ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-800'
+                    }`}>
+                      {t.price}
+                    </span>
                   </button>
                 ))}
               </div>
@@ -867,12 +876,40 @@ function CalculatorSection({ onOpenModal }: { onOpenModal: (t?: string) => void 
               </div>
             </div>
             
+            <div className="space-y-4 pt-2">
+              <Label className="text-base font-bold text-slate-900">4. Профессиональный монтаж</Label>
+              <button
+                type="button"
+                onClick={() => setIncludeInstallation(!includeInstallation)}
+                className={`w-full p-4 rounded-2xl border text-left transition-all flex items-center justify-between ${
+                  includeInstallation
+                    ? 'border-blue-600 bg-blue-50/40 text-slate-950 ring-2 ring-blue-600/10'
+                    : 'border-slate-200 text-slate-500 bg-white hover:border-slate-300'
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <div className={`w-6 h-6 rounded-md border flex items-center justify-center transition-all ${
+                    includeInstallation ? 'bg-blue-600 border-blue-600 text-white' : 'border-slate-300 bg-white'
+                  }`}>
+                    {includeInstallation && <CheckCircle2 className="w-4 h-4 text-white" />}
+                  </div>
+                  <div>
+                    <span className="text-sm sm:text-base font-bold block text-slate-900">С монтажом под ключ (20%)</span>
+                    <span className="text-xs text-slate-500 block leading-normal mt-0.5">Чистая и быстрая установка штатными бригадами со стажем от 5 лет</span>
+                  </div>
+                </div>
+                <span className="text-xs font-bold whitespace-nowrap text-blue-600 bg-blue-100 px-2.5 py-1 rounded-full ml-2">
+                  +20%
+                </span>
+              </button>
+            </div>
+            
             <div className="bg-slate-50 p-4 rounded-2xl flex items-center gap-3 border border-slate-100">
               <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
                 <Shield className="w-5 h-5" />
               </div>
               <p className="text-xs text-slate-500 leading-normal">
-                Базовый тариф за м² включает: закаленное ударопрочное стекло 10 мм, алюминиевые роликовые направляющие и монтажные работы в Перми.
+                Базовый тариф включает проектирование, изготовление закаленного безопасного стекла 10 мм и алюминиевого каркаса на собственном заводе в Перми.
               </p>
             </div>
           </div>
@@ -881,23 +918,36 @@ function CalculatorSection({ onOpenModal }: { onOpenModal: (t?: string) => void 
           <div className="lg:col-span-5 bg-slate-900 text-white p-8 md:p-10 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
             <div className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] bg-blue-500/10 blur-3xl rounded-full"></div>
             
-            <div className="relative z-10 space-y-8">
+            <div className="relative z-10 space-y-6">
               <div>
-                <span className="text-xs font-bold text-blue-400 uppercase tracking-wider block mb-2">Предварительный расчет</span>
-                <div className="text-3xl font-extrabold text-white flex items-baseline gap-2">
+                <span className="text-xs font-bold text-blue-400 uppercase tracking-wider block mb-2">Предварительная смета</span>
+                <div className="text-4xl font-extrabold text-white flex items-baseline gap-2">
                   <span className="text-4xl md:text-5xl text-blue-400 font-black">{estimatedCost.toLocaleString()}</span>
                   <span className="text-2xl">₽</span>
                 </div>
-                <div className="text-sm text-slate-400 mt-2 flex justify-between items-center border-b border-slate-800 pb-4">
-                  <span>Ориентировочная площадь:</span>
+              </div>
+
+              <div className="space-y-3 border-y border-slate-800 py-4 text-sm">
+                <div className="flex justify-between items-center text-slate-400">
+                  <span>Конструкция {glazingType === 'fixed' ? '(Глухая)' : '(Раздвижная)'}:</span>
+                  <span className="font-bold text-white">{baseCost.toLocaleString()} ₽</span>
+                </div>
+                <div className="flex justify-between items-center text-slate-400">
+                  <span>Площадь остекления:</span>
                   <span className="font-bold text-white">{area.toFixed(1)} м²</span>
+                </div>
+                <div className="flex justify-between items-center text-slate-400">
+                  <span>Профессиональный монтаж:</span>
+                  <span className="font-bold text-white">
+                    {includeInstallation ? `${installationCost.toLocaleString()} ₽` : 'не выбран'}
+                  </span>
                 </div>
               </div>
 
               {!isSuccess ? (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} className="space-y-4 pt-2">
                   <div className="text-sm font-bold text-slate-200">
-                    Получить детальную смету и зафиксировать цену завода:
+                    Получить точный расчет и зафиксировать цену завода:
                   </div>
                   
                   <div className="space-y-2">
