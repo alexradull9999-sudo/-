@@ -63,6 +63,7 @@ export default function App() {
             
               <div className="hidden md:flex items-center space-x-8">
                 <button onClick={() => scrollToSection('advantages')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Преимущества</button>
+                <button onClick={() => scrollToSection('calculator')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Калькулятор</button>
                 <button onClick={() => scrollToSection('portfolio')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Работы</button>
                 <button onClick={() => scrollToSection('prices')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">Цены</button>
                 <button onClick={() => scrollToSection('faq')} className="text-slate-600 hover:text-blue-600 font-medium transition-colors">FAQ</button>
@@ -84,6 +85,7 @@ export default function App() {
         {isMenuOpen && (
           <div className="md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1 shadow-lg">
             <button onClick={() => scrollToSection('advantages')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">Преимущества</button>
+            <button onClick={() => scrollToSection('calculator')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">Калькулятор</button>
             <button onClick={() => scrollToSection('portfolio')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">Работы</button>
             <button onClick={() => scrollToSection('prices')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">Цены</button>
             <button onClick={() => scrollToSection('faq')} className="block w-full text-left px-3 py-2 text-base font-medium text-slate-700 hover:text-blue-600 hover:bg-slate-50 rounded-md">FAQ</button>
@@ -94,16 +96,17 @@ export default function App() {
         )}
       </nav>
 
-      <main className="pt-20">
+      <main className="pt-20 pb-20 md:pb-0">
         <HeroSection 
           onScrollToQuiz={() => scrollToSection('quiz')} 
           onScrollToPortfolio={() => scrollToSection('portfolio')} 
           onOpenModal={openModal}
         />
+        <QuizSection />
         <WhatWeGlazeSection onOpenModal={openModal} onScrollToQuiz={() => scrollToSection('quiz')} />
         <PainSolutionSection />
         <AdvantagesSection />
-        <QuizSection />
+        <CalculatorSection onOpenModal={openModal} />
         <PortfolioSection />
         <HowWeWorkSection />
         <ReviewsSection />
@@ -113,6 +116,24 @@ export default function App() {
       </main>
 
       <Footer onOpenModal={openModal} />
+
+      {/* Липкий мобильный блок кнопок связи */}
+      <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-white/95 backdrop-blur-md border-t border-slate-200 p-4 shadow-xl flex gap-3">
+        <a 
+          href="tel:+79519387178" 
+          className="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-950 font-bold h-12 rounded-xl flex items-center justify-center gap-2 border border-slate-300 active:scale-95 transition-all"
+        >
+          <Phone className="w-5 h-5 text-blue-600" />
+          <span>Позвонить</span>
+        </a>
+        <button 
+          onClick={() => openModal('Мобильная липкая панель')}
+          className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold h-12 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all shadow-lg shadow-blue-500/10"
+        >
+          <MessageCircle className="w-5 h-5" />
+          <span>Быстрая заявка</span>
+        </button>
+      </div>
 
       <AnimatePresence>
         {isModalOpen && (
@@ -247,16 +268,16 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
 
 function HeroSection({ onScrollToQuiz, onScrollToPortfolio, onOpenModal }: { onScrollToQuiz: () => void, onScrollToPortfolio: () => void, onOpenModal: (t?: string) => void }) {
   return (
-    <section className="relative min-h-[90vh] flex items-center">
+    <section className="relative min-h-[95vh] flex flex-col justify-center">
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
           src="/images/hero.png" 
-          alt="Застекленная веранда" 
+          alt="Застекленная веранда в Перми" 
           className="w-full h-full object-cover"
           fetchPriority="high"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-slate-900/30"></div>
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-900/80 to-slate-900/45"></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
@@ -264,50 +285,52 @@ function HeroSection({ onScrollToQuiz, onScrollToPortfolio, onOpenModal }: { onS
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-sm font-medium mb-6 backdrop-blur-sm">
               <MapPin className="w-4 h-4" />
-              <span>Работаем в Перми и Пермском крае</span>
+              <span>Официальный производитель в Перми и Пермском крае</span>
             </div>
             
-            <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-6 tracking-tight">
-              Безрамное остекление <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">в Перми</span>
+            <h1 className="text-4xl md:text-5xl lg:text-3xl font-extrabold text-white leading-tight mb-6 tracking-tight">
+              Панорамная веранда без ветра и пыли: остекление <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">напрямую с завода</span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-slate-200 mb-10 leading-relaxed font-light max-w-2xl">
-              От 120 000 ₽. Напрямую от производителя. Монтаж за 1–3 дня. Гарантия 25 лет.
+            <p className="text-lg md:text-xl text-slate-200 mb-10 leading-relaxed font-light max-w-2xl">
+              Закаленное стекло 10 мм выдержит морозы до -40°C и ураганный ветер, а аккуратный монтаж займет всего 1-3 дня с гарантией 25 лет по договору.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 mb-12">
-              <Button size="lg" onClick={onScrollToQuiz} className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6 h-auto rounded-xl shadow-lg shadow-blue-600/20 transition-all hover:scale-105">
-                Рассчитать стоимость
+            <div className="flex flex-col sm:flex-row gap-4 mb-3">
+              <Button size="lg" onClick={onScrollToQuiz} className="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-6 h-auto rounded-xl shadow-lg shadow-blue-600/20 transition-all hover:scale-105 font-bold">
+                Рассчитать стоимость с завода
               </Button>
               <Button size="lg" variant="outline" onClick={onScrollToPortfolio} className="bg-white/10 hover:bg-white/20 text-white border-white/30 text-lg px-8 py-6 h-auto rounded-xl backdrop-blur-sm transition-all">
-                Смотреть работы
+                Смотреть наши работы
               </Button>
             </div>
+            
+            {/* Оффер под кнопкой */}
+            <p className="text-xs text-blue-300 mb-12 flex items-center gap-1.5 pl-1">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              Зафиксируйте цену сегодня и получите бесплатный выезд инженера-технолога + 3D-визуализацию вашей веранды в подарок!
+            </p>
 
-            <div className="flex flex-wrap items-center gap-6 text-slate-300">
-              <div className="flex items-center gap-2 bg-slate-800/50 backdrop-blur-sm rounded-lg px-4 py-2 border border-slate-700/50">
-                <CheckCircle2 className="w-5 h-5 text-blue-400" />
-                <span className="font-medium">Более 200 объектов в крае</span>
+            {/* Блок доверия (счетчики) */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8">
+              <div className="bg-slate-900/60 backdrop-blur-sm border border-slate-800 p-4 rounded-xl">
+                <div className="text-2xl sm:text-3xl font-extrabold text-blue-400">7 лет</div>
+                <div className="text-[10px] sm:text-xs text-slate-300 mt-1">завод в Перми</div>
               </div>
-              <div className="flex items-center gap-4">
-                <a href="tel:+79519387178" className="flex items-center gap-2 hover:text-white transition-colors">
-                  <Phone className="w-5 h-5" />
-                  <span className="font-medium">+7 (951) 938-71-78</span>
-                </a>
-                <button 
-                  onClick={() => onOpenModal('Написать в Telegram')}
-                  className="flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
-                >
-                  <MessageCircle className="w-5 h-5" />
-                  <span className="font-medium">Telegram</span>
-                </button>
-                <button 
-                  onClick={() => onOpenModal('Написать Max')}
-                  className="flex items-center gap-2 text-slate-300 hover:text-white transition-colors"
-                >
-                  <Star className="w-5 h-5" />
-                  <span className="font-medium">Написать Max</span>
-                </button>
+              <div className="bg-slate-900/60 backdrop-blur-sm border border-slate-800 p-4 rounded-xl">
+                <div className="text-2xl sm:text-3xl font-extrabold text-blue-400">428</div>
+                <div className="text-[10px] sm:text-xs text-slate-300 mt-1">объектов сдано</div>
+              </div>
+              <div className="bg-slate-900/60 backdrop-blur-sm border border-slate-800 p-4 rounded-xl">
+                <div className="text-2xl sm:text-3xl font-extrabold text-blue-400">0 ₽</div>
+                <div className="text-[10px] sm:text-xs text-slate-300 mt-1">замер и 3D-эскиз</div>
+              </div>
+              <div className="bg-slate-900/60 backdrop-blur-sm border border-slate-800 p-4 rounded-xl">
+                <div className="text-2xl sm:text-3xl font-extrabold text-blue-400">25 лет</div>
+                <div className="text-[10px] sm:text-xs text-slate-300 mt-1">честная гарантия</div>
               </div>
             </div>
           </div>
@@ -634,28 +657,28 @@ function AdvantagesSection() {
   const advantages = [
     {
       icon: <Factory className="w-8 h-8 text-blue-600" />,
-      title: "Цена без наценки",
-      desc: "Покупаете напрямую у производителя. Экономия до 30% по сравнению с посредниками."
+      title: "Собственный завод в Перми",
+      desc: "Производим профили и остекление самостоятельно. Вы не переплачиваете посредникам до 30% и получаете сертифицированный контроль качества."
     },
     {
       icon: <Clock className="w-8 h-8 text-blue-600" />,
       title: "Монтаж за 1–3 дня",
-      desc: "Бригада выезжает в течение недели от замера, работаем без остановки."
+      desc: "Собственные штатные бригады со стажем от 5 лет работают чисто и аккуратно. Выезжаем по всему Пермскому краю."
     },
     {
       icon: <Shield className="w-8 h-8 text-blue-600" />,
       title: "Гарантия 25 лет",
-      desc: "Самая длинная гарантия в сегменте. Подтверждена сертификатами."
-    },
-    {
-      icon: <ThermometerSnowflake className="w-8 h-8 text-blue-600" />,
-      title: "Работает при -40°C",
-      desc: "Летом стёкла складываются, в дождь и ветер — защищают. Пермский климат не помеха."
+      desc: "Фиксируем гарантийные обязательства на деформации профилей и стеклянного полотна в юридическом договоре."
     },
     {
       icon: <Ruler className="w-8 h-8 text-blue-600" />,
-      title: "Замер бесплатно",
-      desc: "Выезжаем в день обращения, считаем стоимость за 30 минут прямо на объекте."
+      title: "Замер и 3D-эскиз за 0 ₽",
+      desc: "Выезжаем в любой населенный пункт края, делаем замеры за 30 минут и строим 3D-визуализацию вашей веранды без доплат."
+    },
+    {
+      icon: <ThermometerSnowflake className="w-8 h-8 text-blue-600" />,
+      title: "Выдерживает до -40°C",
+      desc: "Конструкция отлично спроектирована под уральские зимы: специальный сплав профилей не ржавеет и сохраняет бесшумный ход створок."
     }
   ];
 
@@ -663,8 +686,8 @@ function AdvantagesSection() {
     <section id="advantages" className="py-24 bg-slate-50 border-y border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Почему выбирают нас</h2>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto">Мы знаем особенности пермского климата и делаем остекление, которое служит десятилетиями.</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mb-6">Почему выбирают нас</h2>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">Мы знаем особенности пермского климата и делаем остекление, которое служит десятилетиями.</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
@@ -688,11 +711,242 @@ function AdvantagesSection() {
           </div>
           <div className="bg-white px-6 py-3 rounded-full shadow-sm border border-slate-100 flex items-center gap-2 text-sm font-medium text-slate-700">
             <MapPin className="w-4 h-4 text-blue-500" />
-            <span>Уже работаем в Пермском крае</span>
+            <span>Собственное производство в Перми</span>
           </div>
           <div className="bg-white px-6 py-3 rounded-full shadow-sm border border-slate-100 flex items-center gap-2 text-sm font-medium text-slate-700">
             <Clock className="w-4 h-4 text-blue-500" />
-            <span>Успейте до сезона — пока не выросла очередь</span>
+            <span>Успейте до начала сезона — зафиксируйте выгодную цену</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CalculatorSection({ onOpenModal }: { onOpenModal: (t?: string) => void }) {
+  const [objectType, setObjectType] = useState<'veranda' | 'balcony' | 'gazebo'>('veranda');
+  const [width, setWidth] = useState<number>(5);
+  const [height, setHeight] = useState<number>(2.5);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  const prices: Record<'veranda' | 'balcony' | 'gazebo', number> = {
+    veranda: 3200,
+    balcony: 2800,
+    gazebo: 3500,
+  };
+
+  const area = width * height;
+  const estimatedCost = Math.round(area * prices[objectType]);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get('name'),
+      phone: formData.get('phone'),
+      type: `Калькулятор: ${objectType === 'veranda' ? 'Веранда' : objectType === 'balcony' ? 'Балкон' : 'Беседка'}`,
+      details: {
+        width: `${width} м`,
+        height: `${height} м`,
+        area: `${area.toFixed(1)} м²`,
+        estimatedCost: `${estimatedCost.toLocaleString()} ₽`
+      },
+      source: 'Интерактивный калькулятор'
+    };
+
+    if (typeof (window as any).ym !== 'undefined') {
+      (window as any).ym(108711441, 'reachGoal', 'calc_submit');
+    }
+
+    try {
+      await Promise.allSettled([
+        fetch('/send.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        }),
+        submitToGoogleForms({
+          name: data.name as string,
+          phone: data.phone as string,
+          source: data.source,
+          type: data.type,
+          details: data.details
+        })
+      ]);
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 5000);
+    } catch (err) {
+      console.error(err);
+      setIsSubmitting(false);
+      alert('Ошибка при отправке. Пожалуйста, позвоните нам: +7 (951) 938-71-78');
+    }
+  };
+
+  return (
+    <section id="calculator" className="py-24 bg-slate-50 border-y border-slate-200 scroll-mt-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <span className="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-3 py-1 rounded-full">Интерактивный расчет</span>
+          <h2 className="text-3xl md:text-5xl font-bold text-slate-900 mt-4 mb-6">Калькулятор стоимости остекления</h2>
+          <p className="text-xl text-slate-600">Рассчитайте предварительную цену за 30 секунд. Укажите параметры вашего объекта ниже.</p>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-12 items-start max-w-6xl mx-auto">
+          {/* Слайдеры и Опции */}
+          <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-slate-100 space-y-8">
+            <div className="space-y-4">
+              <Label className="text-base font-bold text-slate-900">1. Выберите тип вашего объекта</Label>
+              <div className="grid grid-cols-3 gap-3">
+                {[
+                  { id: 'veranda', label: 'Веранда / Терраса', icon: <Home className="w-5 h-5 mx-auto mb-1" /> },
+                  { id: 'balcony', label: 'Балкон / Лоджия', icon: <Building2 className="w-5 h-5 mx-auto mb-1" /> },
+                  { id: 'gazebo', label: 'Беседка / Гриль', icon: <Tent className="w-5 h-5 mx-auto mb-1" /> },
+                ].map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => setObjectType(t.id as any)}
+                    type="button"
+                    className={`p-4 rounded-xl border text-center transition-all ${
+                      objectType === t.id
+                        ? 'border-blue-600 bg-blue-50/50 text-blue-700 font-bold shadow-sm'
+                        : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                    }`}
+                  >
+                    {t.icon}
+                    <span className="text-xs sm:text-sm block mt-1">{t.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <Label className="text-base font-bold text-slate-900">2. Ширина остекления (м)</Label>
+                <div className="bg-slate-100 text-slate-800 font-bold px-3 py-1 rounded-lg text-sm">{width} м</div>
+              </div>
+              <input
+                type="range"
+                min="2"
+                max="20"
+                step="0.5"
+                value={width}
+                onChange={(e) => setWidth(parseFloat(e.target.value))}
+                className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+              />
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>2 м</span>
+                <span>11 м</span>
+                <span>20 м</span>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <Label className="text-base font-bold text-slate-900">3. Высота остекления (м)</Label>
+                <div className="bg-slate-100 text-slate-800 font-bold px-3 py-1 rounded-lg text-sm">{height} м</div>
+              </div>
+              <input
+                type="range"
+                min="1.5"
+                max="4"
+                step="0.1"
+                value={height}
+                onChange={(e) => setHeight(parseFloat(e.target.value))}
+                className="w-full h-2 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-blue-600"
+              />
+              <div className="flex justify-between text-xs text-slate-400">
+                <span>1.5 м</span>
+                <span>2.7 м</span>
+                <span>4.0 м</span>
+              </div>
+            </div>
+            
+            <div className="bg-slate-50 p-4 rounded-2xl flex items-center gap-3 border border-slate-100">
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 flex-shrink-0">
+                <Shield className="w-5 h-5" />
+              </div>
+              <p className="text-xs text-slate-500 leading-normal">
+                Базовый тариф за м² включает: закаленное ударопрочное стекло 10 мм, алюминиевые роликовые направляющие и монтажные работы в Перми.
+              </p>
+            </div>
+          </div>
+
+          {/* Результаты расчета и форма захвата */}
+          <div className="lg:col-span-5 bg-slate-900 text-white p-8 md:p-10 rounded-3xl border border-slate-800 shadow-xl relative overflow-hidden">
+            <div className="absolute -top-[20%] -right-[20%] w-[60%] h-[60%] bg-blue-500/10 blur-3xl rounded-full"></div>
+            
+            <div className="relative z-10 space-y-8">
+              <div>
+                <span className="text-xs font-bold text-blue-400 uppercase tracking-wider block mb-2">Предварительный расчет</span>
+                <div className="text-3xl font-extrabold text-white flex items-baseline gap-2">
+                  <span className="text-4xl md:text-5xl text-blue-400 font-black">{estimatedCost.toLocaleString()}</span>
+                  <span className="text-2xl">₽</span>
+                </div>
+                <div className="text-sm text-slate-400 mt-2 flex justify-between items-center border-b border-slate-800 pb-4">
+                  <span>Ориентировочная площадь:</span>
+                  <span className="font-bold text-white">{area.toFixed(1)} м²</span>
+                </div>
+              </div>
+
+              {!isSuccess ? (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="text-sm font-bold text-slate-200">
+                    Получить детальную смету и зафиксировать цену завода:
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="calc-name" className="text-xs text-slate-300">Ваше имя</Label>
+                    <Input
+                      name="name"
+                      id="calc-name"
+                      placeholder="Иван"
+                      required
+                      className="h-12 bg-slate-800 border-slate-700 text-white rounded-xl placeholder-slate-500 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="calc-phone" className="text-xs text-slate-300">Телефон для связи</Label>
+                    <Input
+                      name="phone"
+                      id="calc-phone"
+                      type="tel"
+                      placeholder="+7 (___) ___-__-__"
+                      required
+                      className="h-12 bg-slate-800 border-slate-700 text-white rounded-xl placeholder-slate-500 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <Button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold h-12 rounded-xl text-base mt-4 shadow-lg shadow-blue-600/20"
+                  >
+                    {isSubmitting ? 'Отправляем параметры...' : 'Получить точную смету'}
+                  </Button>
+
+                  <p className="text-[10px] text-slate-500 text-center leading-normal mt-3">
+                    🔒 Ваши данные в безопасности. Мы не шлем спам, перезвоним только для расчета стоимости.
+                  </p>
+                </form>
+              ) : (
+                <div className="text-center py-6 animate-in zoom-in-95 duration-300">
+                  <div className="w-16 h-16 bg-green-950 text-green-400 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-800">
+                    <CheckCircle2 className="w-8 h-8" />
+                  </div>
+                  <h4 className="text-xl font-bold text-white mb-2">Параметры отправлены!</h4>
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    Наш замерщик-технолог уже производит точный расчет стоимости по вашим габаритам ({width} × {height} м). Мы перезвоним вам в течение 15 минут!
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
