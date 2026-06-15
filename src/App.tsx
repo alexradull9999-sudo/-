@@ -169,9 +169,9 @@ function LeadModal({ title, isOpen, onClose }: { title: string, isOpen: boolean,
     }
 
     try {
-      // Отправляем параллельно — PHP + Google Forms напрямую из браузера
+      // Отправляем параллельно — webhook + Google Forms напрямую из браузера
       await Promise.allSettled([
-        fetch('/send.php', {
+        fetch('https://hook.eu1.make.com/h33wwaiy3y9cxg7f86torjgslmrh6l8d', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
@@ -567,7 +567,7 @@ function CalculatorSection({ onOpenModal }: { onOpenModal: (t?: string) => void 
 
     try {
       await Promise.allSettled([
-        fetch('/send.php', {
+        fetch('https://hook.eu1.make.com/h33wwaiy3y9cxg7f86torjgslmrh6l8d', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
@@ -840,7 +840,7 @@ function QuizSection() {
 
     try {
       await Promise.allSettled([
-        fetch('/send.php', {
+        fetch('https://hook.eu1.make.com/h33wwaiy3y9cxg7f86torjgslmrh6l8d', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
@@ -1352,7 +1352,7 @@ function FinalCtaSection({ onOpenModal }: { onOpenModal: (t?: string) => void })
                 
                 try {
                   await Promise.allSettled([
-                    fetch('/send.php', {
+                    fetch('https://hook.eu1.make.com/h33wwaiy3y9cxg7f86torjgslmrh6l8d', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify(data)
