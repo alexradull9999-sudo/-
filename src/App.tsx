@@ -281,9 +281,8 @@ function HeroSection({ onScrollToQuiz, onScrollToPortfolio, onOpenModal }: { onS
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-20">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-sm font-medium mb-6 backdrop-blur-sm">
+        <div className="max-w-3xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-200 text-sm font-medium mb-6 backdrop-blur-sm">
               <MapPin className="w-4 h-4" />
               <span>Официальный производитель в Перми и Пермском крае</span>
             </div>
@@ -334,212 +333,15 @@ function HeroSection({ onScrollToQuiz, onScrollToPortfolio, onOpenModal }: { onS
               </div>
             </div>
           </div>
-          
-          <div className="hidden lg:block">
-            <VerandaAnimation />
-          </div>
-        </div>
       </div>
     </section>
   );
 }
 
 function VerandaAnimation() {
-  return (
-    <div className="relative w-full max-w-lg aspect-[4/3] mx-auto mt-8 overflow-hidden rounded-2xl bg-gradient-to-b from-sky-100 to-white border border-slate-200 shadow-2xl">
-      {/* Sun / Sky glow */}
-      <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-orange-300/20 blur-3xl rounded-full"></div>
-
-      {/* 1. House Wall (Siding texture) */}
-      <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="absolute bottom-0 left-0 w-[35%] h-[90%] bg-[#E6E2DD] border-r border-[#D0CCC7] z-20 flex flex-col items-center shadow-[10px_0_20px_rgba(0,0,0,0.05)]"
-      >
-        {/* Siding Texture */}
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'repeating-linear-gradient(transparent, transparent 19px, #000 20px)' }}></div>
-        
-        {/* House Window */}
-        <div className="mt-16 w-20 h-28 bg-white p-2 rounded shadow-md relative z-10">
-          <div className="w-full h-full bg-gradient-to-b from-sky-800 to-sky-600 relative overflow-hidden">
-            {/* Warm interior light */}
-            <div className="absolute inset-0 bg-orange-400/30 shadow-[inset_0_0_20px_rgba(251,146,60,0.6)]"></div>
-            {/* Window frames */}
-            <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white"></div>
-            <div className="absolute top-0 left-1/2 w-[2px] h-full bg-white"></div>
-          </div>
-        </div>
-      </motion.div>
-
-      {/* House Roof */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-        className="absolute top-0 left-[-5%] w-[45%] h-[12%] bg-[#3A3F47] z-30 shadow-xl"
-        style={{ clipPath: 'polygon(0 0, 100% 0, 90% 100%, 0 100%)' }}
-      />
-
-      {/* 2. Deck / Foundation */}
-      <motion.div
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={{ scaleX: 1, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
-        className="absolute bottom-[10%] left-[35%] w-[55%] h-[6%] bg-[#A09D9A] border-t-4 border-[#8A8784] shadow-lg origin-left z-10 overflow-hidden"
-      >
-         {/* Deck planks texture */}
-         <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'repeating-linear-gradient(90deg, transparent, transparent 14px, #000 15px)' }}></div>
-      </motion.div>
-
-      {/* Interior Elements (Plant & Warm Glow) */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.5 }}
-        className="absolute bottom-[16%] left-[35%] w-[55%] h-[55%] bg-gradient-to-t from-orange-400/10 to-transparent z-10"
-      />
-
-      {/* Interior Wall (Behind the sofa) */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 1.2 }}
-        className="absolute bottom-[16%] left-[35%] w-[55%] h-[55%] bg-[#F5F2EE] z-0 border-l border-slate-200"
-      >
-        {/* Subtle wall pattern */}
-        <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
-      </motion.div>
-
-      {/* Sofa */}
-      <motion.div
-        initial={{ opacity: 0, y: 10, scale: 0.9 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.6, delay: 2.2 }}
-        className="absolute bottom-[16%] left-[50%] w-[32%] h-[18%] z-10"
-      >
-        {/* Sofa Base */}
-        <div className="absolute bottom-0 w-full h-[60%] bg-slate-700 rounded-t-sm shadow-md"></div>
-        {/* Sofa Backrest */}
-        <div className="absolute bottom-[60%] w-full h-[40%] bg-slate-600 rounded-t-md"></div>
-        {/* Sofa Cushions */}
-        <div className="absolute bottom-[20%] left-[5%] w-[42%] h-[50%] bg-slate-500 rounded-sm"></div>
-        <div className="absolute bottom-[20%] right-[5%] w-[42%] h-[50%] bg-slate-500 rounded-sm"></div>
-        {/* Sofa Armrests */}
-        <div className="absolute bottom-0 left-[-5%] w-[10%] h-[70%] bg-slate-800 rounded-sm"></div>
-        <div className="absolute bottom-0 right-[-5%] w-[10%] h-[70%] bg-slate-800 rounded-sm"></div>
-      </motion.div>
-
-      {/* Lamp */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 2.6, type: "spring" }}
-        className="absolute bottom-[16%] left-[42%] w-10 h-32 z-10 flex flex-col items-center"
-      >
-        {/* Lamp Shade */}
-        <div className="w-10 h-8 bg-amber-100 rounded-t-full shadow-[0_0_20px_rgba(251,191,36,0.4)] relative">
-          {/* Lamp Glow */}
-          <div className="absolute inset-0 bg-amber-400/20 blur-md rounded-full"></div>
-        </div>
-        {/* Lamp Pole */}
-        <div className="w-1 h-20 bg-slate-800"></div>
-        {/* Lamp Base */}
-        <div className="w-6 h-2 bg-slate-900 rounded-full"></div>
-      </motion.div>
-
-      {/* Plant (Moved slightly) */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1.8 }}
-        className="absolute bottom-[16%] left-[82%] w-8 h-14 z-10 flex flex-col items-center justify-end"
-      >
-        {/* Plant leaves */}
-        <div className="w-7 h-8 bg-emerald-600/90 rounded-full mb-[-6px] shadow-sm"></div>
-        {/* Plant pot */}
-        <div className="w-5 h-6 bg-amber-800/90 rounded-b-sm shadow-sm"></div>
-      </motion.div>
-
-      {/* 3. Aluminum Frame (Anthracite) */}
-      {/* Wall Post */}
-      <motion.div
-        initial={{ scaleY: 0 }}
-        animate={{ scaleY: 1 }}
-        transition={{ duration: 0.6, delay: 1.4, ease: "easeOut" }}
-        className="absolute bottom-[16%] left-[35%] w-[2%] h-[55%] bg-[#2C3036] origin-bottom z-30 shadow-sm"
-      />
-      {/* Front Post */}
-      <motion.div
-        initial={{ scaleY: 0 }}
-        animate={{ scaleY: 1 }}
-        transition={{ duration: 0.6, delay: 1.6, ease: "easeOut" }}
-        className="absolute bottom-[16%] left-[88%] w-[2%] h-[55%] bg-[#2C3036] origin-bottom z-30 shadow-sm"
-      />
-      {/* Top Rail */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.6, delay: 2.0, ease: "easeOut" }}
-        className="absolute bottom-[71%] left-[35%] w-[55%] h-[2%] bg-[#2C3036] origin-left z-30 shadow-md"
-      />
-      {/* Bottom Rail */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 0.6, delay: 2.0, ease: "easeOut" }}
-        className="absolute bottom-[16%] left-[35%] w-[55%] h-[1.5%] bg-[#4A4F58] origin-left z-30"
-      />
-
-      {/* 4. Veranda Roof (Glass) */}
-      <motion.div
-        initial={{ scaleX: 0, opacity: 0 }}
-        animate={{ scaleX: 1, opacity: 1 }}
-        transition={{ duration: 0.8, delay: 2.4, ease: "easeOut" }}
-        className="absolute bottom-[73%] left-[35%] w-[55%] h-[3%] bg-sky-300/40 backdrop-blur-sm border-t border-white/60 origin-left z-20"
-      />
-
-      {/* 5. Frameless Glass Panes (Sliding out from the wall) */}
-      {[37, 50, 63, 76].map((finalLeft, i) => (
-        <motion.div
-          key={`pane-${i}`}
-          initial={{ opacity: 0, left: '37%' }}
-          animate={{ opacity: 1, left: `${finalLeft}%` }}
-          transition={{ 
-            opacity: { duration: 0.4, delay: 2.8 },
-            // Slide from right to left (last pane moves first, like real frameless systems)
-            left: { duration: 0.8, delay: 3.0 + (3-i) * 0.3, ease: "easeInOut" }
-          }}
-          className="absolute bottom-[17.5%] w-[13%] h-[53.5%] bg-sky-200/20 backdrop-blur-[2px] border-x border-white/40 shadow-[inset_0_0_10px_rgba(255,255,255,0.3)] z-20 overflow-hidden"
-        >
-          {/* Glass reflection */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/20 to-transparent opacity-50"></div>
-        </motion.div>
-      ))}
-
-      {/* 6. UI Overlays */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 4.5 }}
-        className="absolute top-[20%] right-[2%] bg-white/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-200 text-slate-800 text-xs font-bold shadow-xl z-40 flex items-center gap-1.5"
-      >
-        <CheckCircle2 className="w-3.5 h-3.5 text-blue-600" />
-        Безрамная система
-      </motion.div>
-      
-      <motion.div
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.5, delay: 4.7 }}
-        className="absolute bottom-[4%] left-[50%] bg-slate-900/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-700 text-white text-xs font-medium shadow-xl z-40 flex items-center gap-1.5"
-      >
-        <Clock className="w-3.5 h-3.5 text-blue-400" />
-        Монтаж: 1-3 дня
-      </motion.div>
-    </div>
-  );
+  return null;
 }
+
 
 function WhatWeGlazeSection({ onOpenModal, onScrollToQuiz }: { onOpenModal: (t?: string) => void, onScrollToQuiz: () => void }) {
   const items = [
